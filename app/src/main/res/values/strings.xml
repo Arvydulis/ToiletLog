@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ToiletLog</string>
+    <string name="open">Open navigation drawer</string>
+    <string name="close">Close navigation drawer</string>
 </resources>

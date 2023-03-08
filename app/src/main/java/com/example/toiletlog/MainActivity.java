@@ -2,6 +2,7 @@ package com.example.toiletlog;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // show add entry activity
                 Toast.makeText(getApplicationContext(), "add entry", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getBaseContext(), TestActivity.class);
+                startActivity(intent);
             }
         });
 
