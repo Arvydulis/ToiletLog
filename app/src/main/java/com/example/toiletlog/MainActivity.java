@@ -47,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // show settings activity
                 Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
+
+                //goes to settings
+                Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
+                startActivity(intent);
+
+
+
             }
         });
     }

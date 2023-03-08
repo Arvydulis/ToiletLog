@@ -2,4 +2,17 @@
     <string name="app_name">ToiletLog</string>
     <string name="open">Open navigation drawer</string>
     <string name="close">Close navigation drawer</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Profile</string>
+    <string name="sync_header">Notifications</string>
+
+    <!-- Messages Preferences -->
+    <string name="name_title">Your name</string>
+    <string name="gender_title">Your gender</string>
+
+    <!-- Sync Preferences -->
+    <string name="notifications_title">Receive daily notifications</string>
+
 </resources>
