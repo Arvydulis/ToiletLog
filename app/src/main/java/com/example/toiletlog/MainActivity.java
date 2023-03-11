@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button addBtn, listBtn, settingsBtn;
+    Button addBtn, listBtn, settingsBtn, tempBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         addBtn = findViewById(R.id.btn_addNew);
         listBtn = findViewById(R.id.btn_list);
         settingsBtn = findViewById(R.id.btn_settings);
+        tempBtn = findViewById(R.id.btn_temp);
 
 
 
@@ -55,6 +56,21 @@ public class MainActivity extends AppCompatActivity {
 
                 //goes to settings
                 Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
+                startActivity(intent);
+
+
+
+            }
+        });
+
+        tempBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // show settings activity
+                Toast.makeText(getApplicationContext(), "temp", Toast.LENGTH_SHORT).show();
+
+                //goes to settings
+                Intent intent = new Intent(getBaseContext(), SingleEntryViewActivity.class);
                 startActivity(intent);
 
 

@@ -14,4 +14,7 @@ public interface LogEntryDAO {
 
     @Query("SELECT * from LogEntry ORDER BY date, time ASC")
     List<LogEntry> getAllLogEntries();
+
+    @Query("SELECT * from LogEntry WHERE id = :searchId ORDER BY date, time ASC")
+    LogEntry getLogEntryById(long searchId);
 }
