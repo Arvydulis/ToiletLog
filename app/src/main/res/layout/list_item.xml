@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/entry_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2022-08-20"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:layout_gravity="center_vertical"
+                />
+
+            <TextView
+                android:id="@+id/entry_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18:30"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:layout_gravity="center_vertical"
+                />
+
+            <TextView
+                android:id="@+id/entry_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Big"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:layout_gravity="center_vertical"
+                />
+
+
+
+        </LinearLayout>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/baseline_delete_24"
+            android:layout_margin="5dp"
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:id="@+id/entry_remove_btn"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

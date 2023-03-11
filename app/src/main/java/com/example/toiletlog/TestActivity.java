@@ -93,23 +93,37 @@ public class TestActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.nav_main_menu: {
-                        Toast.makeText(getApplicationContext(), "main menu", Toast.LENGTH_SHORT).show();
-                        intent = new Intent(getBaseContext(), MainActivity.class);
-                        startActivity(intent);
+                        if (!getClass().getName().equals(MainActivity.class.getName())) {
+                            Toast.makeText(getApplicationContext(), "main menu", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(getBaseContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
                         break;
                     }
                     case R.id.nav_new_entry: {
                         //new entry activity
-                        Toast.makeText(getApplicationContext(), "new entry", Toast.LENGTH_SHORT).show();
+                        if (!getClass().getName().equals(TestActivity.class.getName())) {
+                            Toast.makeText(getApplicationContext(), "new entry", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(getBaseContext(), NewItemActivity.class);
+                            startActivity(intent);
+                        }
                         break;
                     }
                     case R.id.nav_list: {
-                        //new entry activity
-                        Toast.makeText(getApplicationContext(), "list", Toast.LENGTH_SHORT).show();
+                        if (!getClass().getName().equals(DailyLog.class.getName())) {
+                            //new entry activity
+                            Toast.makeText(getApplicationContext(), "list", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(getBaseContext(), ListActivity.class);
+                            startActivity(intent);
+                        }
                         break;
                     }
                     case R.id.nav_settings: {
-                        Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
+                        if (!getClass().getName().equals(SettingsActivity.class.getName())) {
+                            Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(getBaseContext(), SettingsActivity.class);
+                            startActivity(intent);
+                        }
                         break;
                     }
 
