@@ -1,25 +1,32 @@
 package com.example.toiletlog;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+import com.example.toiletlog.databinding.ActivityDailyLogBinding;
 
-import com.google.android.material.navigation.NavigationView;
-
-public class SettingsActivity extends AppCompatActivity {
+public class DailyLog extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -29,25 +36,10 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.settings, new SettingsFragment())
-                    .commit();
-//
-        }
+        setContentView(R.layout.activity_daily_log);
 
         InstantiateAppBarAndNav();
 
-    }
-
-    public static class SettingsFragment extends PreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey);
-        }
     }
 
     @Override
@@ -91,7 +83,8 @@ public class SettingsActivity extends AppCompatActivity {
         drawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close);
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle(R.string.title_settings);
+
+        toolbar.setTitle(R.string.title_activity_daily_log);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Intent intent;
 
+
                 switch (item.getItemId()){
                     case R.id.nav_main_menu: {
                         if (!getClass().getName().equals(MainActivity.class.getName())) {
@@ -119,8 +113,6 @@ public class SettingsActivity extends AppCompatActivity {
                         //new entry activity
                         if (!getClass().getName().equals(TestActivity.class.getName())) {
                             Toast.makeText(getApplicationContext(), "new entry", Toast.LENGTH_SHORT).show();
-                            intent = new Intent(getBaseContext(), NewItemActivity.class);
-                            startActivity(intent);
                         }
                         break;
                     }
@@ -128,7 +120,7 @@ public class SettingsActivity extends AppCompatActivity {
                         if (!getClass().getName().equals(DailyLog.class.getName())) {
                             //new entry activity
                             Toast.makeText(getApplicationContext(), "list", Toast.LENGTH_SHORT).show();
-                            intent = new Intent(getBaseContext(), ListActivity.class);
+                            intent = new Intent(getBaseContext(), DailyLog.class);
                             startActivity(intent);
                         }
                         break;
