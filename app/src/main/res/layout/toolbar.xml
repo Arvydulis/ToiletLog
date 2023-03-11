@@ -10,5 +10,6 @@
     android:theme="?attr/actionBarTheme"
     app:navigationIcon="@drawable/ic_menu"
     app:title="New entry"
-    app:menu="@menu/toolbar_menu"/>
+    app:menu="@menu/toolbar_menu"
+    />
 

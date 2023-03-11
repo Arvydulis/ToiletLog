@@ -2,10 +2,12 @@ package com.example.toiletlog;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -92,6 +95,10 @@ public class SettingsActivity extends AppCompatActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle(R.string.title_settings);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        TextView headerName = ((TextView)navigationView.getHeaderView(0).findViewById(R.id.header_name));
+        headerName.setText( "User: "+prefs.getString("name", ""));
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

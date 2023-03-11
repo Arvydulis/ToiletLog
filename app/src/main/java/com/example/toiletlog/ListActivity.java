@@ -6,13 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,24 +49,23 @@ public class ListActivity extends AppCompatActivity {
         List<LogEntry> logEntryList = db.logEntryDAO().getAllLogEntries();
         LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
         personsListTextView.setAdapter(listAdapter);
+        personsListTextView.setClickable(true);
+        personsListTextView.setOnItemClickListener( new AdapterView.OnItemClickListener(){
 
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getBaseContext(), SingleEntryViewActivity.class);
+                intent.putExtra("date", logEntryList.get(i).getDate());
+                intent.putExtra("time", logEntryList.get(i).getTime());
+                intent.putExtra("type", logEntryList.get(i).getType());
+                intent.putExtra("size", logEntryList.get(i).getSize());
+                startActivity(intent);
+            }
+        });
         //getLogEntryList();
     }
 
-    private void getLogEntryList()
-    {
-//        personsListTextView.setText("");
-//        List<LogEntry> logEntryList = db.logEntryDAO().getAllLogEntries();
-//        for (LogEntry logEntry : logEntryList)
-//        {
-//            personsListTextView.append(logEntry.getDate() + " " + logEntry.getTime() + " " + logEntry.getType() + " " + logEntry.getSize());
-//            personsListTextView.append("\n");
-//        }
-//
-//        personsListTextView.add;
 
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,6 +109,10 @@ public class ListActivity extends AppCompatActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle(R.string.title_list);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        TextView headerName = ((TextView)navigationView.getHeaderView(0).findViewById(R.id.header_name));
+        headerName.setText( "User: "+prefs.getString("name", ""));
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

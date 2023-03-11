@@ -1,16 +1,21 @@
 package com.example.toiletlog;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     Button addBtn, listBtn, settingsBtn, tempBtn;
+    TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +25,10 @@ public class MainActivity extends AppCompatActivity {
         addBtn = findViewById(R.id.btn_addNew);
         listBtn = findViewById(R.id.btn_list);
         settingsBtn = findViewById(R.id.btn_settings);
-        tempBtn = findViewById(R.id.btn_temp);
+        title = findViewById(R.id.menuTitle);
 
-
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        title.setText( "Welcome to ToiletLog,\n" + prefs.getString("name", "") + "!");
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,20 +69,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        tempBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // show settings activity
-                Toast.makeText(getApplicationContext(), "temp", Toast.LENGTH_SHORT).show();
-
-                //goes to settings
-                Intent intent = new Intent(getBaseContext(), SingleEntryViewActivity.class);
-                startActivity(intent);
-
-
-
-            }
-        });
+//        tempBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // show settings activity
+//                Toast.makeText(getApplicationContext(), "temp", Toast.LENGTH_SHORT).show();
+//
+//                //goes to settings
+//                Intent intent = new Intent(getBaseContext(), SingleEntryViewActivity.class);
+//                startActivity(intent);
+//
+//
+//
+//            }
+//        });
     }
 
 

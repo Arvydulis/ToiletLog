@@ -84,7 +84,7 @@ public class DailyLog extends AppCompatActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        toolbar.setTitle(R.string.title_activity_daily_log);
+        toolbar.setTitle(R.string.title_list);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

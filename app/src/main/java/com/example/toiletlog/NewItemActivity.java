@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -21,6 +23,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -93,7 +96,7 @@ public class NewItemActivity extends AppCompatActivity {
                             "Saved successfully" + temp,
                             Toast.LENGTH_SHORT
                     ).show();
-                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    Intent intent = new Intent(getBaseContext(), ListActivity.class);
                     startActivity(intent);
                 }
             }
@@ -105,43 +108,47 @@ public class NewItemActivity extends AppCompatActivity {
         boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
-        switch (view.getId()) {
-            case R.id.radio_type1:
-                if (checked)
-                    type = "type1";
-                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
-                    break;
-            case R.id.radio_type2:
-                if (checked)
-                    type = "type2";
-                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
-                    break;
-            case R.id.radio_type3:
-                if (checked)
-                    type = "type3";
-                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.radio_type4:
-                if (checked)
-                    type = "type4";
-                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.radio_type5:
-                if (checked)
-                    type = "type5";
-                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.radio_type6:
-                if (checked)
-                    type = "type6";
-                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.radio_type7:
-                if (checked)
-                    type = "type7";
-                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
-                break;
+        if(checked){
+            type = ((RadioButton) view).getText().toString();
         }
+
+//        switch (view.getId()) {
+//            case R.id.radio_type1:
+//                if (checked)
+//                    type = ((RadioButton) view).getText().toString();
+//                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
+//                    break;
+//            case R.id.radio_type2:
+//                if (checked)
+//                    type = "type2";
+//                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
+//                    break;
+//            case R.id.radio_type3:
+//                if (checked)
+//                    type = "type3";
+//                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.radio_type4:
+//                if (checked)
+//                    type = "type4";
+//                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.radio_type5:
+//                if (checked)
+//                    type = "type5";
+//                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.radio_type6:
+//                if (checked)
+//                    type = "type6";
+//                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.radio_type7:
+//                if (checked)
+//                    type = "type7";
+//                    Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
+//                break;
+//        }
     }
 
     public void onSizeRadioButtonClicked(View view) {
@@ -199,8 +206,7 @@ public class NewItemActivity extends AppCompatActivity {
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
                             // set day of month , month and year value in the edit text
-                            dateEditText.setText(dayOfMonth + "/"
-                                    + (monthOfYear + 1) + "/" + year);
+                            dateEditText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
                         }
                     }, mYear, mMonth, mDay);
@@ -270,6 +276,10 @@ public class NewItemActivity extends AppCompatActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle(R.string.title_new_entry);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        TextView headerName = ((TextView)navigationView.getHeaderView(0).findViewById(R.id.header_name));
+        headerName.setText( "User: "+prefs.getString("name", ""));
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,15 +9,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_main_menu"
+            android:icon="@drawable/ic_menu"
             android:title="Main Menu"/>
         <item
             android:id="@+id/nav_new_entry"
-            android:title="New Entry"/>
+            android:title="New Entry"
+            android:icon="@drawable/add_ic"/>
         <item
             android:id="@+id/nav_list"
-            android:title="Daily log"/>
+            android:title="Daily log"
+            android:icon="@drawable/baseline_list_24"/>
         <item
             android:id="@+id/nav_settings"
-            android:title="Settings"/>
+            android:title="Settings"
+            android:icon="@drawable/baseline_settings_24"/>
     </group>
 </menu>

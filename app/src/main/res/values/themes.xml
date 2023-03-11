@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.ToiletLog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#B84420</item>
-        <item name="colorPrimaryVariant">#872B10</item>
+        <item name="colorPrimary">#97391C</item>
+        <item name="colorPrimaryVariant">#78270F</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#F2C078</item>
