@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:isScrollContainer="true"
+        android:scrollIndicators="right"
+        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical"
+        tools:context=".NewItemActivity">
+
+        <!-- Here you put the rest of your current view-->
+
+        <EditText
+            android:id="@+id/setDate"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="#d4d4d4"
+            android:hint="Select Date..."
+            android:padding="15dp"
+            android:textColor="#897"
+            android:textColorHint="#090"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/setTime"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="#d4d4d4"
+            android:hint="Select Time..."
+            android:padding="15dp"
+            android:textColor="#897"
+            android:textColorHint="#090"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setDate" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sizes" />/>
+
+        <RadioGroup
+            android:id="@+id/types"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewType">
+
+            <RadioButton
+                android:id="@+id/radio_type1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onTypeRadioButtonClicked"
+                android:text="Separate hard lumps" />
+
+            <RadioButton
+                android:id="@+id/radio_type2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onTypeRadioButtonClicked"
+                android:text="Lumpy and sausage like" />
+
+            <RadioButton
+                android:id="@+id/radio_type3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onTypeRadioButtonClicked"
+                android:text="A sausige shape with cracks in the surface" />
+
+            <RadioButton
+                android:id="@+id/radio_type4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onTypeRadioButtonClicked"
+                android:text="Like a smooth, soft sausage or snake" />
+
+            <RadioButton
+                android:id="@+id/radio_type5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onTypeRadioButtonClicked"
+                android:text="Soft blobs with clear cut edges" />
+
+            <RadioButton
+                android:id="@+id/radio_type6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onTypeRadioButtonClicked"
+                android:text="Mushy consistency with ragged edges" />
+
+            <RadioButton
+                android:id="@+id/radio_type7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onTypeRadioButtonClicked"
+                android:text="Liquid cosistency with no solid pieces" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/sizes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewSize">
+
+            <RadioButton
+                android:id="@+id/small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSizeRadioButtonClicked"
+                android:text="Small" />
+
+            <RadioButton
+                android:id="@+id/small_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSizeRadioButtonClicked"
+                android:text="Small-Medium" />
+
+            <RadioButton
+                android:id="@+id/medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSizeRadioButtonClicked"
+                android:text="Medium" />
+
+            <RadioButton
+                android:id="@+id/medium_large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSizeRadioButtonClicked"
+                android:text="Medium-Large" />
+
+            <RadioButton
+                android:id="@+id/large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSizeRadioButtonClicked"
+                android:text="Large" />
+
+            <RadioButton
+                android:id="@+id/very_large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSizeRadioButtonClicked"
+                android:text="Very Large" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textViewType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setTime" />
+
+        <TextView
+            android:id="@+id/textViewSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/types" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

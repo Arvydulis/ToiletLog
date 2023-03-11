@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 // show add entry activity
                 Toast.makeText(getApplicationContext(), "add entry", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(getBaseContext(), TestActivity.class);
+                Intent intent = new Intent(getBaseContext(), NewItemActivity.class);
                 startActivity(intent);
             }
         });
@@ -39,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // show list activity
                 Toast.makeText(getApplicationContext(), "show list", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getBaseContext(), ListActivity.class);
+                startActivity(intent);
+//                Intent intent = new Intent(getBaseContext(), TestActivity.class);
+//                startActivity(intent);
             }
         });
 
