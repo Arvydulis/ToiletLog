@@ -10,7 +10,7 @@
         android:id="@+id/menuTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to Toilet Log"
+        android:text="Welcome to Toilet Log,\n Username!"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"

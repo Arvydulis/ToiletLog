@@ -21,8 +21,6 @@ public class LogListAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context.getApplicationContext());
     }
 
-    // override other abstract methods here
-
     @Override
     public View getView(int position, View convertView, ViewGroup container) {
         if (convertView == null) {

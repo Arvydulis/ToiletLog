@@ -50,11 +50,6 @@ public class SingleEntryViewActivity extends AppCompatActivity {
         sizeView = findViewById(R.id.single_entry_size);
         backBtn = findViewById(R.id.back_btn);
 
-        //db = AppActivity.getDatabase();
-//        singleEntryTextView = (TextView) findViewById(R.id.singleEntry);
-//        LogEntry logEntry = db.logEntryDAO().getLogEntryById(1);
-//        singleEntryTextView.setText(logEntry.getDate() + " " + logEntry.getTime() + " " + logEntry.getType() + " " + logEntry.getSize());
-
         Intent intent = getIntent();
 
         if (intent != null){
@@ -67,8 +62,9 @@ public class SingleEntryViewActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), ListActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getBaseContext(), ListActivity.class);
+//                startActivity(intent);
+                finish();
             }
         });
 
