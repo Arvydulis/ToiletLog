@@ -65,7 +65,7 @@ public class Navbar extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.nav_main_menu: {
                         if (!activity.getClass().getName().equals(MainActivity.class.getName())) {
-                            Toast.makeText(activity.getApplicationContext(), "main menu", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(activity.getApplicationContext(), "main menu", Toast.LENGTH_SHORT).show();
                             intent = new Intent(activity.getBaseContext(), MainActivity.class);
                             activity.startActivity(intent);
                         }
@@ -74,7 +74,7 @@ public class Navbar extends AppCompatActivity {
                     case R.id.nav_new_entry: {
                         //new entry activity
                         if (!activity.getClass().getName().equals(TestActivity.class.getName())) {
-                            Toast.makeText(activity.getApplicationContext(), "new entry", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(activity.getApplicationContext(), "new entry", Toast.LENGTH_SHORT).show();
                             intent = new Intent(activity.getBaseContext(), NewItemActivity.class);
                             activity.startActivity(intent);
                         }
@@ -83,15 +83,24 @@ public class Navbar extends AppCompatActivity {
                     case R.id.nav_list: {
                         if (!activity.getClass().getName().equals(DailyLog.class.getName())) {
                             //new entry activity
-                            Toast.makeText(activity.getApplicationContext(), "list", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(activity.getApplicationContext(), "list", Toast.LENGTH_SHORT).show();
                             intent = new Intent(activity.getBaseContext(), ListActivity.class);
+                            activity.startActivity(intent);
+                        }
+                        break;
+                    }
+                    case R.id.nav_map: {
+                        if (!activity.getClass().getName().equals(MapActivity.class.getName())) {
+                            //new entry activity
+                            //Toast.makeText(activity.getApplicationContext(), "list", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(activity.getBaseContext(), MapActivity.class);
                             activity.startActivity(intent);
                         }
                         break;
                     }
                     case R.id.nav_settings: {
                         if (!activity.getClass().getName().equals(SettingsActivity.class.getName())) {
-                            Toast.makeText(activity.getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(activity.getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
                             intent = new Intent(activity.getBaseContext(), SettingsActivity.class);
                             activity.startActivity(intent);
                         }

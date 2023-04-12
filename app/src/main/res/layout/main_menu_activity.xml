@@ -46,12 +46,18 @@
             android:text="Daily log" />
 
         <Button
+            android:id="@+id/btn_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Map" />
+
+        <Button
             android:id="@+id/btn_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Settings" />
 
-<!--        <Button-->
+        <!--        <Button-->
 <!--            android:id="@+id/btn_temp"-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="wrap_content"-->
