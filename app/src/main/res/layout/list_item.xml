@@ -52,15 +52,7 @@
 
 
         </LinearLayout>
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/baseline_delete_24"
-            android:layout_margin="5dp"
-            android:layout_gravity="center_vertical"
-            android:layout_alignParentRight="true"
-            android:id="@+id/entry_remove_btn"
-            />
+        
 
     </RelativeLayout>
 

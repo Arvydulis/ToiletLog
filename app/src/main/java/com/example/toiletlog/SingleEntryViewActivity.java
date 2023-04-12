@@ -2,6 +2,7 @@ package com.example.toiletlog;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -9,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,20 +37,25 @@ public class SingleEntryViewActivity extends AppCompatActivity {
     ActionBarDrawerToggle drawerToggle;
 
     TextView dateView, timeView, typeView, sizeView;
-    FloatingActionButton backBtn;
+    FloatingActionButton backBtn, deleteBtn;
+
+    Navbar navbar = new Navbar();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_entry_view);
 
-        InstantiateAppBarAndNav();
+        //InstantiateAppBarAndNav();
+        navbar.InstantiateAppBarAndNav(this);
+        drawerLayout = navbar.drawerLayout;
 
         dateView = findViewById(R.id.single_entry_date);
         timeView = findViewById(R.id.single_entry_time);
         typeView = findViewById(R.id.single_entry_type);
         sizeView = findViewById(R.id.single_entry_size);
         backBtn = findViewById(R.id.back_btn);
+        deleteBtn = findViewById(R.id.delete_btn);
 
         Intent intent = getIntent();
 
@@ -65,6 +72,29 @@ public class SingleEntryViewActivity extends AppCompatActivity {
 //                Intent intent = new Intent(getBaseContext(), ListActivity.class);
 //                startActivity(intent);
                 finish();
+            }
+        });
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SingleEntryViewActivity.this);
+                alertDialogBuilder.setTitle("Delete entry");
+                alertDialogBuilder.setMessage("Confirm delete entry").setCancelable(false)
+                                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //Delete item from db
+                                        Message.ShowToast(getApplicationContext(), "deleted");
+                                        finish();
+                                    }
+                                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                    }
+                                });
+                alertDialogBuilder.create().show();
+
             }
         });
 
