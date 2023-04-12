@@ -58,4 +58,6 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
 
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
 }

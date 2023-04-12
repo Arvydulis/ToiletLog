@@ -39,12 +39,16 @@ public class SingleEntryViewActivity extends AppCompatActivity {
     TextView dateView, timeView, typeView, sizeView;
     FloatingActionButton backBtn, deleteBtn;
 
+    Navbar navbar = new Navbar();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_entry_view);
 
-        InstantiateAppBarAndNav();
+        //InstantiateAppBarAndNav();
+        navbar.InstantiateAppBarAndNav(this);
+        drawerLayout = navbar.drawerLayout;
 
         dateView = findViewById(R.id.single_entry_date);
         timeView = findViewById(R.id.single_entry_time);

@@ -32,13 +32,16 @@ public class DailyLog extends AppCompatActivity {
     Toolbar toolbar;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
+    Navbar navbar = new Navbar();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_log);
 
-        InstantiateAppBarAndNav();
+        //InstantiateAppBarAndNav();
+        navbar.InstantiateAppBarAndNav(this);
+        drawerLayout = navbar.drawerLayout;
 
     }
 
@@ -74,69 +77,5 @@ public class DailyLog extends AppCompatActivity {
         }
     }
 
-    void InstantiateAppBarAndNav(){
-        toolbar = findViewById(R.id.toolbar);
 
-        setSupportActionBar(toolbar);
-        navigationView= findViewById(R.id.nav_view);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        drawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close);
-        drawerToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        toolbar.setTitle(R.string.title_list);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Intent intent;
-
-
-                switch (item.getItemId()){
-                    case R.id.nav_main_menu: {
-                        if (!getClass().getName().equals(MainActivity.class.getName())) {
-                            Toast.makeText(getApplicationContext(), "main menu", Toast.LENGTH_SHORT).show();
-                            intent = new Intent(getBaseContext(), MainActivity.class);
-                            startActivity(intent);
-                        }
-                        break;
-                    }
-                    case R.id.nav_new_entry: {
-                        //new entry activity
-                        if (!getClass().getName().equals(TestActivity.class.getName())) {
-                            Toast.makeText(getApplicationContext(), "new entry", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    }
-                    case R.id.nav_list: {
-                        if (!getClass().getName().equals(DailyLog.class.getName())) {
-                            //new entry activity
-                            Toast.makeText(getApplicationContext(), "list", Toast.LENGTH_SHORT).show();
-                            intent = new Intent(getBaseContext(), DailyLog.class);
-                            startActivity(intent);
-                        }
-                        break;
-                    }
-                    case R.id.nav_settings: {
-                        if (!getClass().getName().equals(SettingsActivity.class.getName())) {
-                            Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
-                            intent = new Intent(getBaseContext(), SettingsActivity.class);
-                            startActivity(intent);
-                        }
-                        break;
-                    }
-
-                }
-                return false;
-            }
-        });
-    }
 }
