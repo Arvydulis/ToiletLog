@@ -33,7 +33,7 @@ public class Navbar extends AppCompatActivity {
 //        this.drawerToggle = drawerToggle;
 //    }
 
-    public void InstantiateAppBarAndNav( AppCompatActivity activity){
+    public void InstantiateAppBarAndNav( AppCompatActivity activity, int resTitle){
         toolbar = activity.findViewById(R.id.toolbar);
 
         activity.setSupportActionBar(toolbar);
@@ -42,7 +42,7 @@ public class Navbar extends AppCompatActivity {
         drawerToggle = new ActionBarDrawerToggle(activity,drawerLayout, R.string.open, R.string.close);
         drawerToggle.syncState();
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle(R.string.title_map);
+        toolbar.setTitle(resTitle);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
         TextView headerName = ((TextView)navigationView.getHeaderView(0).findViewById(R.id.header_name));

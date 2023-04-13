@@ -108,7 +108,7 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         //InstantiateAppBarAndNav();
-        navbar.InstantiateAppBarAndNav(this);
+        navbar.InstantiateAppBarAndNav(this, R.string.title_list);
         drawerLayout = navbar.drawerLayout;
 
         db = AppActivity.getDatabase();

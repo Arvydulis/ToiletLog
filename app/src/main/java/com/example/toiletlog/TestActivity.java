@@ -37,7 +37,7 @@ public class TestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
         //InstantiateAppBarAndNav();
-        navbar.InstantiateAppBarAndNav(this);
+        navbar.InstantiateAppBarAndNav(this, R.string.title_main_menu);
 
     }
 

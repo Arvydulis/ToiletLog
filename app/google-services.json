@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "225577332111",
+    "firebase_url": "https://toiletlog-383513-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "toiletlog-383513",
+    "storage_bucket": "toiletlog-383513.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225577332111:android:649b609cebb5c36a54affa",
+        "android_client_info": {
+          "package_name": "com.example.toiletlog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225577332111-eq0u8t3f5l2b13s555uh5mcjpg4uthku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcNC30I1pGn7iVaDTZgfV3l1qiWfBWpPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225577332111-eq0u8t3f5l2b13s555uh5mcjpg4uthku.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

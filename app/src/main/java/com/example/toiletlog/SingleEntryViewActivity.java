@@ -47,7 +47,7 @@ public class SingleEntryViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_single_entry_view);
 
         //InstantiateAppBarAndNav();
-        navbar.InstantiateAppBarAndNav(this);
+        navbar.InstantiateAppBarAndNav(this, R.string.title_single_entry);
         drawerLayout = navbar.drawerLayout;
 
         dateView = findViewById(R.id.single_entry_date);

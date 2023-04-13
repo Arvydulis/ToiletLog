@@ -40,7 +40,7 @@ public class DailyLog extends AppCompatActivity {
         setContentView(R.layout.activity_daily_log);
 
         //InstantiateAppBarAndNav();
-        navbar.InstantiateAppBarAndNav(this);
+        navbar.InstantiateAppBarAndNav(this, R.string.title_new_entry);
         drawerLayout = navbar.drawerLayout;
 
     }
