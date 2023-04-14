@@ -11,7 +11,7 @@ public class AppActivity extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "log_entry_db2").allowMainThreadQueries().build();
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "log_entry_db3").allowMainThreadQueries().build();
     }
 
     public static AppDatabase getDatabase() {return db;}
