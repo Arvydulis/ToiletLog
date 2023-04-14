@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class LogListAdapter extends BaseAdapter {
@@ -31,8 +32,10 @@ public class LogListAdapter extends BaseAdapter {
         TextView time = (TextView) convertView.findViewById(R.id.entry_time);
         TextView size = (TextView) convertView.findViewById(R.id.entry_size);
 
-        date.setText(list.get(position).getDate());
-        time.setText(list.get(position).getTime());
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        date.setText(sdf1.format(list.get(position).getDate()));
+        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+        time.setText(sdf2.format(list.get(position).getTime()));
         size.setText(list.get(position).getSize());
 
         return convertView;

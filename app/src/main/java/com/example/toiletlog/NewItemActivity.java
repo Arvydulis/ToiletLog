@@ -29,7 +29,9 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class NewItemActivity extends AppCompatActivity {
 
@@ -42,6 +44,8 @@ public class NewItemActivity extends AppCompatActivity {
 
     private Button button;
 
+    private Date date;
+    private Date time;
     private String type;
     private String size;
 
@@ -81,10 +85,10 @@ public class NewItemActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String date = dateEditText.getText().toString().trim();
-                String time = timeEditText.getText().toString().trim();
+                String dateT = dateEditText.getText().toString().trim();
+                String timeT = timeEditText.getText().toString().trim();
 
-                if (TextUtils.isEmpty(date) || TextUtils.isEmpty(time) || TextUtils.isEmpty(type) || TextUtils.isEmpty(size)) {
+                if (TextUtils.isEmpty(dateT) || TextUtils.isEmpty(timeT) || TextUtils.isEmpty(type) || TextUtils.isEmpty(size)) {
                     Toast.makeText(getApplicationContext(), "Nae/Surname/Phone Number should not be empty", Toast.LENGTH_SHORT).show();
                 }
                 else
@@ -95,7 +99,7 @@ public class NewItemActivity extends AppCompatActivity {
                     logEntry.setType(type);
                     logEntry.setSize(size);
                     db.logEntryDAO().insert(logEntry);
-                    String temp = "\n" + date + " " + time + " " + type + " " + size;
+                    String temp = "\n" + dateT + " " + timeT + " " + type + " " + size;
                     Toast.makeText(
                             getApplicationContext(),
                             "Saved successfully" + temp,
@@ -211,8 +215,11 @@ public class NewItemActivity extends AppCompatActivity {
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
                             // set day of month , month and year value in the edit text
-                            dateEditText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-
+                            //dateEditText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            c.set(year, monthOfYear, dayOfMonth);
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            dateEditText.setText(sdf.format(c.getTime()));
+                            date = c.getTime();
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -231,8 +238,13 @@ public class NewItemActivity extends AppCompatActivity {
                     new TimePickerDialog.OnTimeSetListener() {
 
                         @Override
-                        public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                            timeEditText.setText(i + ":" + i1);
+                        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+                            timeEditText.setText(hourOfDay + ":" + minute);
+                            c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            c.set(Calendar.MINUTE, minute);
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                            timeEditText.setText(sdf.format(c.getTime()));
+                            time = c.getTime();
                         }
                     }, hour, minute, DateFormat.is24HourFormat(NewItemActivity.this));
             timePickerDialog.show();

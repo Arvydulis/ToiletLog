@@ -4,6 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+
+import java.sql.Time;
+import java.util.Date;
+
 
 @Entity
 public class LogEntry {
@@ -13,11 +18,11 @@ public class LogEntry {
 
     @NonNull
     @ColumnInfo(name = "date")
-    private String date;
+    private Date date;
 
     @NonNull
     @ColumnInfo(name = "time")
-    private String time;
+    private Date time;
 
     @NonNull
     @ColumnInfo(name = "type")
@@ -35,21 +40,21 @@ public class LogEntry {
         return id;
     }
 
-    public void setDate(@NonNull String date) {
+    public void setDate(@NonNull Date date) {
         this.date = date;
     }
 
     @NonNull
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setTime(@NonNull String time) {
+    public void setTime(@NonNull Date time) {
         this.time = time;
     }
 
     @NonNull
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
