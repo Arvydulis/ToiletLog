@@ -25,5 +25,8 @@
     <string name="title_single_entry">Single Entry</string>
     <string name="title_map">Public toilet map</string>
 
+    <!-- Map strings -->
+    <string name="map_api_key">AIzaSyDdDdFv2K6plIEKfiEnWpus6uSSNDcI-VY</string>
+
 
 </resources>
