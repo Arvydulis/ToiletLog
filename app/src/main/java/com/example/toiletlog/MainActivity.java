@@ -27,7 +27,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button addBtn, listBtn, settingsBtn, notif_test, tempBtn;
+    Button addBtn, listBtn, settingsBtn, tempBtn;
     TextView title;
 
     @SuppressLint("MissingInflatedId")
@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         addBtn = findViewById(R.id.btn_addNew);
         listBtn = findViewById(R.id.btn_list);
         settingsBtn = findViewById(R.id.btn_settings);
-        notif_test = findViewById(R.id.btn_notif_test);
 
         title = findViewById(R.id.menuTitle);
 
@@ -101,16 +100,6 @@ public class MainActivity extends AppCompatActivity {
                 //goes to settings
                 Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
                 startActivity(intent);
-
-
-            }
-        });
-
-        notif_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
 
 
             }

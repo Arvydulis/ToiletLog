@@ -51,12 +51,6 @@
             android:layout_height="wrap_content"
             android:text="Settings" />
 
-        <Button
-            android:id="@+id/btn_notif_test"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="notif test" />
-
         <!--        <Button-->
 <!--            android:id="@+id/btn_temp"-->
 <!--            android:layout_width="match_parent"-->
