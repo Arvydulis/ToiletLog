@@ -27,6 +27,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +53,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -58,8 +63,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -70,9 +77,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     Navbar navbar = new Navbar();
 
     TextView addressLabel;
+    FloatingActionButton btn_addNewLocation;
+    ImageView locationSetter_img;
+    boolean isLocationSetterVisible;
+
+    LinearLayout locationBtnContainer;
+    boolean isLocationBtnContainerVisible;
+    Button btn_chooseLocation, btn_currentLocation;
+
+    LinearLayout confirmBtnContainer;
+    boolean isConfirmBtnContainerVisible;
+    Button btn_confirmLocation, btn_cancelLocation;
+
+    FrameLayout infoPanel;
+    TextView addressField;
+    ImageView closeInfoPanelBtn;
 
     DatabaseReference db_ref;
     List<LocationData> locations = new ArrayList<>();
+    Map<String, LocationData> locations2 = new HashMap<>();
 
     final String KAUNAS_ID = "ChIJQ9NnsXAi50YRvIs3x-DRS2E";
 
@@ -80,6 +103,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     GoogleMap map;
     LatLng kaunas = new LatLng(54.898521, 23.903597);
     final static int REQUEST_CODE = 100;
+    boolean firstLoad;
 
     boolean isUpdating;
     LocationRequest locationRequest;
@@ -87,13 +111,38 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     Geocoder geocoder;
     List<Address> address;
+    private LatLng lastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        firstLoad = true;
+
         addressLabel = findViewById(R.id.bp_address);
+        btn_addNewLocation = findViewById(R.id.add_location);
+        btn_addNewLocation.setVisibility(View.VISIBLE);
+        locationSetter_img = findViewById(R.id.location_setter);
+        isLocationSetterVisible = false;
+        locationSetter_img.setVisibility(View.INVISIBLE);
+
+        locationBtnContainer = findViewById(R.id.new_location_container);
+        isLocationBtnContainerVisible = false;
+        locationBtnContainer.setVisibility(View.INVISIBLE);
+        btn_chooseLocation = findViewById(R.id.btn_choose_location);
+        btn_currentLocation = findViewById(R.id.btn_current_location);
+
+        confirmBtnContainer = findViewById(R.id.new_location_confirm);
+        isConfirmBtnContainerVisible = false;
+        confirmBtnContainer.setVisibility(View.INVISIBLE);
+        btn_confirmLocation = findViewById(R.id.btn_confirm_location);
+        btn_cancelLocation = findViewById(R.id.btn_cancel_location);
+
+        infoPanel = findViewById(R.id.info_panel);
+        infoPanel.setVisibility(View.INVISIBLE);
+        addressField = findViewById(R.id.address_field);
+        closeInfoPanelBtn = findViewById(R.id.btn_close_info_panel);
 
         //InstantiateAppBarAndNav();
         navbar.InstantiateAppBarAndNav(this, R.string.title_map);
@@ -114,7 +163,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
+        btn_addNewLocation.setOnClickListener(addLocationListener);
+        btn_currentLocation.setOnClickListener(addCurrentLocationListener);
+        btn_chooseLocation.setOnClickListener(addChosenLocationListener);
+        btn_confirmLocation.setOnClickListener(confirmLocationListener);
+        btn_cancelLocation.setOnClickListener(cancelLocationListener);
+        closeInfoPanelBtn.setOnClickListener(closeInfoPanelBtnListener);
     }
 
 
@@ -141,20 +195,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         //googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 12.0f));
 
         locations.clear();
+        locations2.clear();
 
         db_ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.exists()) {
                     LocationData data = snapshot.getValue(LocationData.class);
-                    locations.add(data);
-                    LatLng location = new LatLng(data.getLatitude(), data.getLongitude());
-                    googleMap.addMarker(
-                            new MarkerOptions()
-                                    .position(location)
-                                    .title(data.getTitle())
-                                    .icon(BitmapFromVector(getApplicationContext(), R.drawable.baseline_location_on_24))
-                    );
+//                    locations.add(data);
+                    locations2.put(snapshot.getKey(), data);
+                    AddMarkerToMap(data, snapshot.getKey());
                 }
             }
 
@@ -189,11 +239,31 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 18.0f));
-                ShowLocationAddress(marker.getPosition());
+                if (!(isConfirmBtnContainerVisible || isLocationBtnContainerVisible || isLocationSetterVisible)) {
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 18.0f));
+
+                    addressField.setText(GetAddressStreet(marker.getPosition()));
+                    SetInfoPanelVisible(true);
+                    SetAddLocationBtnVisible(false);
+                }
+
+
                 return true;
             }
         });
+    }
+
+    private void AddMarkerToMap(double latitude, double longitude, String title) {
+        LatLng location = new LatLng(latitude, longitude);
+        map.addMarker(
+                new MarkerOptions()
+                        .position(location)
+                        .title(title)
+                        .icon(BitmapFromVector(getApplicationContext(), R.drawable.baseline_location_on_24))
+        );
+    }
+    void AddMarkerToMap(LocationData data, String title){
+        AddMarkerToMap(data.getLatitude(), data.getLongitude(), title);
     }
 
     @Override
@@ -263,7 +333,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    void GetLastLocation() {
+    void GetLastLocation(boolean addNewLocation) {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                 @Override
@@ -278,8 +348,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 //                                .icon(BitmapDescriptorFactory.);
 //                        //.icon(BitmapFromVector(getApplicationContext(), R.drawable.baseline_location_on_24));
 //                        Marker marker = map.addMarker(markerOptions);
+                        //lastLocation = latLng;
                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
 
+                        if (addNewLocation){
+                            AddNewLocation(latLng.latitude, latLng.longitude, GetAddress(latLng) ,GetAddressStreet(latLng));
+                        }
                         //StartLocationUpdates();
                     }
                 }
@@ -292,17 +366,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     void ShowLocationAddress(LatLng location){
         String chosenAddress = GetAddress(location);
         //Message.ShowToast(getApplicationContext(), chosenAddress);
-        addressLabel.setText(chosenAddress);
+        //addressLabel.setText(chosenAddress);
     }
 
-    String GetAddress(LatLng location){
+    String GetAddress(double latitude, double longitude){
         try {
-            address = geocoder.getFromLocation(location.latitude, location.longitude, 1);
+            address = geocoder.getFromLocation(latitude, longitude, 1);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         return address.get(0).getAddressLine(0);
+    }
+
+    String GetAddress(LatLng location){
+        return GetAddress(location.latitude, location.longitude);
+    }
+
+    String GetAddressStreet(double latitude, double longitude){
+        try {
+            address = geocoder.getFromLocation(latitude, longitude, 1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return address.get(0).getThoroughfare() + " " +
+                address.get(0).getSubThoroughfare() + " " +
+                address.get(0).getLocality();
+    }
+
+    String GetAddressStreet(LatLng location){
+        return GetAddressStreet(location.latitude, location.longitude);
     }
 
     void UpdateLocation(Location location) {
@@ -329,7 +423,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 geocoder = new Geocoder(MapActivity.this, Locale.getDefault());
 
-                GetLastLocation();
+                GetLastLocation(false);
+                //map.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 17.0f));
+
             }
             else {
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(kaunas, 10.0f));
@@ -338,4 +434,147 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+    View.OnClickListener addLocationListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            //Message.ShowToast(getApplicationContext(), "add new");
+            ToggleBtnPanel();
+        }
+    };
+
+    View.OnClickListener addCurrentLocationListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            GetLastLocation(true);
+            SetBtnPanelVisible(false);
+        }
+    };
+
+    View.OnClickListener addChosenLocationListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            SetLocationCursorVisible(true);
+            SetBtnPanelVisible(false);
+            SetConfirmBtnPanelVisible(true);
+            SetAddLocationBtnVisible(false);
+        }
+    };
+
+    View.OnClickListener confirmLocationListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            SetLocationCursorVisible(false);
+            SetAddLocationBtnVisible(true);
+            SetBtnPanelVisible(false);
+            SetConfirmBtnPanelVisible(false);
+
+            LatLng location = map.getCameraPosition().target;
+            AddNewLocation(location.latitude, location.longitude, GetAddress(location), GetAddressStreet(location));
+        }
+    };
+
+    View.OnClickListener cancelLocationListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            SetLocationCursorVisible(false);
+            SetAddLocationBtnVisible(true);
+            SetBtnPanelVisible(true);
+            SetConfirmBtnPanelVisible(false);
+        }
+    };
+
+    View.OnClickListener closeInfoPanelBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            SetInfoPanelVisible(false);
+            SetAddLocationBtnVisible(true);
+        }
+    };
+
+    void ToggleLocationCursor(){
+        if (locationSetter_img != null) {
+            if (isLocationSetterVisible) {
+                SetLocationCursorVisible(false);
+            } else {
+                SetLocationCursorVisible(true);
+            }
+        }
+    }
+
+    void SetLocationCursorVisible(boolean visible){
+        if (locationSetter_img != null) {
+            if (!visible) {
+                locationSetter_img.setVisibility(View.INVISIBLE);
+                isLocationSetterVisible = false;
+            } else {
+                locationSetter_img.setVisibility(View.VISIBLE);
+                isLocationSetterVisible = true;
+            }
+        }
+    }
+
+    void ToggleBtnPanel(){
+        if (locationBtnContainer != null){
+            if (isLocationBtnContainerVisible){
+                SetBtnPanelVisible(false);
+            }else{
+                SetBtnPanelVisible(true);
+            }
+        }
+    }
+
+    void SetBtnPanelVisible(boolean visible){
+        if (locationBtnContainer != null){
+            if (!visible){
+                locationBtnContainer.setVisibility(View.INVISIBLE);
+                btn_addNewLocation.setImageResource(R.drawable.baseline_add_location_24);
+                isLocationBtnContainerVisible = false;
+            }else{
+                locationBtnContainer.setVisibility(View.VISIBLE);
+                btn_addNewLocation.setImageResource(R.drawable.baseline_arrow_forward_ios_24);
+                isLocationBtnContainerVisible = true;
+            }
+        }
+    }
+
+    void SetConfirmBtnPanelVisible(boolean visible){
+        if (confirmBtnContainer != null){
+            if (!visible){
+                confirmBtnContainer.setVisibility(View.INVISIBLE);
+                isConfirmBtnContainerVisible = false;
+            }else{
+                confirmBtnContainer.setVisibility(View.VISIBLE);
+                isConfirmBtnContainerVisible = true;
+            }
+        }
+    }
+
+    void SetAddLocationBtnVisible(boolean visible){
+        if (btn_addNewLocation != null){
+            if (!visible){
+                btn_addNewLocation.setVisibility(View.INVISIBLE);
+            }else{
+                btn_addNewLocation.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    void SetInfoPanelVisible(boolean visible){
+        if (infoPanel != null){
+            if (!visible){
+                infoPanel.setVisibility(View.INVISIBLE);
+            }else{
+                infoPanel.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    void AddNewLocation(double latitude, double longitude, String title, String key){
+
+        LocationData data = new LocationData(title, latitude, longitude);
+        db_ref.child(key.replace(".", "")).setValue(data);
+        //AddMarkerToMap(data);
+    }
+
 }

@@ -29,13 +29,163 @@
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <fragment
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                tools:context=".MapActivity"
-                />
+                android:layout_height="match_parent">
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    tools:context=".MapActivity"
+                    />
+
+                <ImageView
+                    android:id="@+id/location_setter"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:clickable="false"
+                    android:src="@drawable/baseline_location_searching_24"
+                    android:visibility="invisible"
+                    app:tint="@color/colorPrimaryLight" />
+
+                <LinearLayout
+                    android:id="@+id/new_location_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_toStartOf="@+id/add_location"
+                    android:background="@drawable/rounded_panel_bg"
+                    android:backgroundTint="@color/colorPrimaryLight"
+                    android:elevation="5dp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="10dp"
+                    android:visibility="invisible">
+
+                    <Button
+                        android:id="@+id/btn_choose_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_panel_bg"
+                        android:text="Choose\n location"
+                        android:textColor="@color/black"
+
+                        />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="0dp" />
+
+                    <Button
+                        android:id="@+id/btn_current_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_panel_bg"
+                        android:text="Current\n location"
+
+                        android:textColor="@color/black" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="13dp"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="10dp"
+                    android:layout_toStartOf="@+id/add_location"
+                    android:background="@drawable/rounded_panel_bg"
+                    android:backgroundTint="@color/colorPrimaryLight"
+                    android:elevation="5dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/new_location_confirm"
+                    android:visibility="invisible">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Confirm"
+                        android:id="@+id/btn_confirm_location"
+                        android:background="@drawable/rounded_panel_bg"
+                        android:textColor="@color/black"
+
+                        />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="0dp"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cancel"
+                        android:id="@+id/btn_cancel_location"
+                        android:background="@drawable/rounded_panel_bg"
+
+                        android:textColor="@color/black"
+                        />
+
+
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/slide_pannel_bg"
+                    android:paddingVertical="10dp"
+
+                    android:id="@+id/info_panel">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/btn_close_info_panel"
+                        android:src="@drawable/baseline_close_24"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="top|end"
+                        />
+
+                    <TextView
+                        android:id="@+id/address_field"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Address"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"/>
+
+
+
+
+                </FrameLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/add_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="25dp"
+                    android:clickable="true"
+                    android:visibility="invisible"
+                    app:backgroundTint="#F0BE78"
+                    app:maxImageSize="40dp"
+                    app:srcCompat="@drawable/baseline_add_location_24" />
+
+
+            </RelativeLayout>
 
 
         </LinearLayout>
@@ -53,7 +203,5 @@
 
 
     </androidx.drawerlayout.widget.DrawerLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
