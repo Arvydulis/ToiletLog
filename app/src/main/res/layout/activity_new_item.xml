@@ -64,6 +64,7 @@
                     android:textColorHint="#090"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:focusable="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -83,6 +84,7 @@
                     android:textColorHint="#090"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:focusable="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/setDate" />
