@@ -3,6 +3,7 @@ package com.example.toiletlog;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -14,6 +15,7 @@ import androidx.preference.PreferenceManager;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -92,6 +94,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     FrameLayout infoPanel;
     TextView addressField;
     ImageView closeInfoPanelBtn;
+    Button btn_removeLocation;
+    Marker currentlySelectedMarker;
 
     DatabaseReference db_ref;
     List<LocationData> locations = new ArrayList<>();
@@ -143,6 +147,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         infoPanel.setVisibility(View.INVISIBLE);
         addressField = findViewById(R.id.address_field);
         closeInfoPanelBtn = findViewById(R.id.btn_close_info_panel);
+        btn_removeLocation = findViewById(R.id.btn_remove_location);
+        currentlySelectedMarker = null;
 
         //InstantiateAppBarAndNav();
         navbar.InstantiateAppBarAndNav(this, R.string.title_map);
@@ -169,6 +175,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         btn_confirmLocation.setOnClickListener(confirmLocationListener);
         btn_cancelLocation.setOnClickListener(cancelLocationListener);
         closeInfoPanelBtn.setOnClickListener(closeInfoPanelBtnListener);
+        btn_removeLocation.setOnClickListener(removeLocationBtnListener);
     }
 
 
@@ -215,7 +222,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+                if (currentlySelectedMarker != null){
+                    currentlySelectedMarker.remove();
+                    currentlySelectedMarker = null;
+                    SetInfoPanelVisible(false);
+                    SetAddLocationBtnVisible(true);
+                }
             }
 
             @Override
@@ -245,6 +257,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     addressField.setText(GetAddressStreet(marker.getPosition()));
                     SetInfoPanelVisible(true);
                     SetAddLocationBtnVisible(false);
+                    currentlySelectedMarker = marker;
                 }
 
 
@@ -489,8 +502,43 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         public void onClick(View view) {
             SetInfoPanelVisible(false);
             SetAddLocationBtnVisible(true);
+            currentlySelectedMarker = null;
         }
     };
+
+    View.OnClickListener removeLocationBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            //Message.ShowToast(getApplicationContext(), "delete");
+            //show confirmation dialog
+            ShowDeleteLocationDialog();
+        }
+    };
+
+    void ShowDeleteLocationDialog(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MapActivity.this);
+        alertDialogBuilder.setTitle("Remove selected location");
+        alertDialogBuilder.setMessage("Confirm remove selected location").setCancelable(false)
+                .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Delete item from db
+                        if (currentlySelectedMarker != null){
+                            RemoveLocation();
+                            Message.ShowToast(getApplicationContext(), "removed");
+                        }else {
+                            Message.ShowToast(getApplicationContext(), "No marker selected");
+                        }
+
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        alertDialogBuilder.create().show();
+    }
 
     void ToggleLocationCursor(){
         if (locationSetter_img != null) {
@@ -575,6 +623,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LocationData data = new LocationData(title, latitude, longitude);
         db_ref.child(key.replace(".", "")).setValue(data);
         //AddMarkerToMap(data);
+    }
+
+    void RemoveLocation(){
+        db_ref.child(currentlySelectedMarker.getTitle()).removeValue();
     }
 
 }
