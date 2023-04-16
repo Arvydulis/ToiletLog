@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class SingleEntryViewActivity extends AppCompatActivity {
@@ -46,6 +48,8 @@ public class SingleEntryViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_entry_view);
 
+        db = AppActivity.getDatabase();
+
         //InstantiateAppBarAndNav();
         navbar.InstantiateAppBarAndNav(this, R.string.title_single_entry);
         drawerLayout = navbar.drawerLayout;
@@ -60,8 +64,12 @@ public class SingleEntryViewActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         if (intent != null){
-            dateView.setText(intent.getStringExtra("date"));
-            timeView.setText(intent.getStringExtra("time"));
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+            Date myDate = (Date) intent.getSerializableExtra("date");
+            dateView.setText(sdf1.format(myDate));
+            SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+            Date myTime = (Date) intent.getSerializableExtra("time");
+            timeView.setText(sdf2.format(myTime));
             typeView.setText(intent.getStringExtra("type"));
             sizeView.setText(intent.getStringExtra("size"));
         }
@@ -84,8 +92,11 @@ public class SingleEntryViewActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         //Delete item from db
-                                        Message.ShowToast(getApplicationContext(), "deleted");
-                                        finish();
+                                        long id = intent.getLongExtra("id",-1);
+                                        db.logEntryDAO().deleteById(id);
+                                        Message.ShowToast(getApplicationContext(), "deleted " + id);
+                                        Intent intent = new Intent(getBaseContext(), ListActivity.class);
+                                        startActivity(intent);
                                     }
                                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                     @Override

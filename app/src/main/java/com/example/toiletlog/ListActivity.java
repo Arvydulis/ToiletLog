@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,7 +31,10 @@ import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
@@ -56,11 +61,11 @@ public class ListActivity extends AppCompatActivity {
         {
             LogEntry m = list.get(i);
             int position = i;
-            LocalDate t1 = LocalDate.parse( list.get(i).getDate(), DateTimeFormat.forPattern("dd/MM/yyyy")) ;
+            Date t1 = list.get(i).getDate();//LocalDate.parse( list.get(i).getDate(), DateTimeFormat.forPattern("dd/MM/yyyy")) ;
 
             for (int j=i+1; j < n; j++)   //Find minimum
             {
-                LocalDate t2 = LocalDate.parse( list.get(j).getDate(), DateTimeFormat.forPattern("dd/MM/yyyy")) ;
+                Date t2 = list.get(j).getDate();//LocalDate.parse( list.get(j).getDate(), DateTimeFormat.forPattern("dd/MM/yyyy")) ;
                 if (t1.compareTo(t2) > 0)
                 {
                     m = list.get(j);
@@ -82,11 +87,11 @@ public class ListActivity extends AppCompatActivity {
         {
             LogEntry m = list.get(i);
             int position = i;
-            LocalTime t1 = LocalTime.parse( list.get(i).getTime() ) ;
+            Date t1 = list.get(i).getTime();//LocalTime.parse( list.get(i).getTime() ) ;
 
             for (int j=i+1; j < n; j++)   //Find minimum
             {
-                LocalTime t2 = LocalTime.parse( list.get(j).getTime() ) ;
+                Date t2 = list.get(j).getTime();//LocalTime.parse( list.get(j).getTime() ) ;
 
                 if (t1.compareTo(t2) > 0)
                 {
@@ -114,6 +119,22 @@ public class ListActivity extends AppCompatActivity {
         db = AppActivity.getDatabase();
         personsListTextView = (ListView) findViewById(R.id.list_view);
 
+        //--------------------------------------------------------------------------------------------
+
+        int day = 13;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, 2023); // Set the year you want to get entries for
+        calendar.set(Calendar.MONTH, Calendar.APRIL); // Set the month you want to get entries for (January is 0)
+        calendar.set(Calendar.DAY_OF_MONTH, day); // Set the day you want to get entries for
+        calendar.set(Calendar.HOUR, 0); // Set the day you want to get entries for
+        calendar.set(Calendar.MINUTE, 0); // Set the day you want to get entries for
+
+        Date startDate = calendar.getTime(); // Get the Date object representing the day
+
+        calendar.set(Calendar.DAY_OF_MONTH, day+1); // Set the day you want to get entries for
+        Date endDate = calendar.getTime(); // Get the Date object representing the day
+
+        //logEntryList = db.logEntryDAO().getLogEntriesByDate(startDate, endDate);
         logEntryList = db.logEntryDAO().getAllLogEntries();
         LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
         personsListTextView.setAdapter(listAdapter);
@@ -165,6 +186,7 @@ public class ListActivity extends AppCompatActivity {
                 intent.putExtra("time", logEntryList.get(i).getTime());
                 intent.putExtra("type", logEntryList.get(i).getType());
                 intent.putExtra("size", logEntryList.get(i).getSize());
+                intent.putExtra("id", logEntryList.get(i).getId());
                 startActivity(intent);
             }
         });
@@ -204,6 +226,5 @@ public class ListActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
 
 }
