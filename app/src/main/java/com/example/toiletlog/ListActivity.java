@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,12 +38,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ListActivity extends AppCompatActivity {
 
     private  AppDatabase db;
 
     private ListView personsListTextView;
+    //Calendar things
+    //---------------------------------------------------
+    CalendarView calendarView;
+    TextView fromDateTextView, toDateTextView;
+    long fromDate, toDate;
+
+    List<Date> eventDatesList;
+    //---------------------------------------------------
+
+
 
     //appbar
     DrawerLayout drawerLayout;
@@ -116,6 +131,45 @@ public class ListActivity extends AppCompatActivity {
 
         db = AppActivity.getDatabase();
         personsListTextView = (ListView) findViewById(R.id.list_view);
+
+        //--------------------------------------------------------------------------------------------
+
+
+        //test for now
+        //date pick thing
+        //--------------------------------------------------------------------------------------------
+
+        calendarView = findViewById(R.id.calendarView);
+        fromDateTextView = findViewById(R.id.fromDateTextView);
+        toDateTextView = findViewById(R.id.toDateTextView);
+
+
+
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                long selectedDate = calendar.getTimeInMillis();
+                if (fromDate == 0) {
+                    fromDate = selectedDate;
+                    fromDateTextView.setText(getFormattedDate(selectedDate));
+                } else if (toDate == 0) {
+                    toDate = selectedDate;
+                    toDateTextView.setText(getFormattedDate(selectedDate));
+                    // Apply filter with fromDate and toDate
+                } else {
+                    // Reset selection
+                    fromDate = selectedDate;
+                    toDate = 0;
+                    fromDateTextView.setText(getFormattedDate(selectedDate));
+                    toDateTextView.setText("");
+                }
+            }
+
+
+        });
 
         //--------------------------------------------------------------------------------------------
 
@@ -224,6 +278,42 @@ public class ListActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+    //date pick time
+    //------------------------------------------------------------
+    private void showDatePickerDialog(final EditText dateField) {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        dateField.setText(dateFormat.format(calendar.getTime()));
+                    }
+                },
+                year,
+                month,
+                day
+        );
+        datePickerDialog.show();
+    }
+
+    private String getFormattedDate(long dateInMillis) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        return dateFormat.format(new Date(dateInMillis));
+    }
+
+    //------------------------------------------------------------
+
 
 
 }
