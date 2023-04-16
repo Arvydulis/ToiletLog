@@ -30,6 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
     ActionBarDrawerToggle drawerToggle;
 
     Navbar navbar = new Navbar();
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
         navbar.InstantiateAppBarAndNav(this, R.string.title_settings);
         drawerLayout = navbar.drawerLayout;
 
-
+        prefs = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
@@ -71,6 +72,8 @@ public class SettingsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
+                Message.ShowNotification(SettingsActivity.this, getApplicationContext(),
+                        "Test notification", "Hello " + prefs.getString("name", "") + "!!!");
                 return true;
             default:
                 // If we got here, the user's action was not recognized.

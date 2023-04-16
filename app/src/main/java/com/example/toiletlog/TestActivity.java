@@ -53,6 +53,9 @@ public class TestActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(TestActivity.this);
+                Message.ShowNotification(TestActivity.this, getApplicationContext(),
+                        "Test notification", "Hello " + prefs.getString("name", "") + "!!!");
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
@@ -65,7 +68,7 @@ public class TestActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(navbar.drawerLayout.isDrawerOpen(GravityCompat.START)){
             navbar.drawerLayout.closeDrawer(GravityCompat.START);
-        }else {
+        }else{
             super.onBackPressed();
         }
     }
