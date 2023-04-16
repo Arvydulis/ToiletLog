@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -132,8 +134,8 @@ public class ListActivity extends AppCompatActivity {
         calendar.set(Calendar.DAY_OF_MONTH, day+1); // Set the day you want to get entries for
         Date endDate = calendar.getTime(); // Get the Date object representing the day
 
-        logEntryList = db.logEntryDAO().getLogEntriesByDate(startDate, endDate);
-        //logEntryList = db.logEntryDAO().getAllLogEntries();
+        //logEntryList = db.logEntryDAO().getLogEntriesByDate(startDate, endDate);
+        logEntryList = db.logEntryDAO().getAllLogEntries();
         LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
         personsListTextView.setAdapter(listAdapter);
         personsListTextView.setClickable(true);
@@ -224,6 +226,5 @@ public class ListActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
 
 }

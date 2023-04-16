@@ -95,7 +95,8 @@ public class SingleEntryViewActivity extends AppCompatActivity {
                                         long id = intent.getLongExtra("id",-1);
                                         db.logEntryDAO().deleteById(id);
                                         Message.ShowToast(getApplicationContext(), "deleted " + id);
-                                        finish();
+                                        Intent intent = new Intent(getBaseContext(), ListActivity.class);
+                                        startActivity(intent);
                                     }
                                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                     @Override
