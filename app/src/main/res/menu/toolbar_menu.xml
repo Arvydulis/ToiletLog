@@ -7,7 +7,7 @@
 
     <!-- Settings, should always be in the overflow -->
     <item android:id="@+id/action_settings"
-        android:title="item 2"
+        android:title="Send notification"
         app:showAsAction="never"
         />
     </menu>

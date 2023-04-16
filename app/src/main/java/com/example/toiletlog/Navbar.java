@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -113,20 +114,7 @@ public class Navbar extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (drawerToggle.onOptionsItemSelected(item)){
-//            return true;
-//        }
+
+
 //
-//        switch (item.getItemId()) {
-//            case R.id.action_settings:
-//                // User chose the "Settings" item, show the app settings UI...
-//                return true;
-//            default:
-//                // If we got here, the user's action was not recognized.
-//                // Invoke the superclass to handle it.
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 }
