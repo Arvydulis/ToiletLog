@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import org.joda.time.format.DateTimeFormat;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -45,16 +47,13 @@ public class ListActivity extends AppCompatActivity {
     private  AppDatabase db;
 
     private ListView personsListTextView;
+
     //Calendar things
     //---------------------------------------------------
     CalendarView calendarView;
-    TextView fromDateTextView, toDateTextView;
-    long fromDate, toDate;
+    Date currentDate;
 
-    List<Date> eventDatesList;
     //---------------------------------------------------
-
-
 
     //appbar
     DrawerLayout drawerLayout;
@@ -133,61 +132,39 @@ public class ListActivity extends AppCompatActivity {
         personsListTextView = (ListView) findViewById(R.id.list_view);
 
         //--------------------------------------------------------------------------------------------
-
-
         //test for now
         //date pick thing
         //--------------------------------------------------------------------------------------------
 
         calendarView = findViewById(R.id.calendarView);
-        fromDateTextView = findViewById(R.id.fromDateTextView);
-        toDateTextView = findViewById(R.id.toDateTextView);
-
-
-
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
                 Calendar calendar = Calendar.getInstance();
+
                 calendar.set(year, month, dayOfMonth);
-                long selectedDate = calendar.getTimeInMillis();
-                if (fromDate == 0) {
-                    fromDate = selectedDate;
-                    fromDateTextView.setText(getFormattedDate(selectedDate));
-                } else if (toDate == 0) {
-                    toDate = selectedDate;
-                    toDateTextView.setText(getFormattedDate(selectedDate));
-                    // Apply filter with fromDate and toDate
-                } else {
-                    // Reset selection
-                    fromDate = selectedDate;
-                    toDate = 0;
-                    fromDateTextView.setText(getFormattedDate(selectedDate));
-                    toDateTextView.setText("");
-                }
+
+                calendar.set(Calendar.HOUR, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                currentDate = calendar.getTime();
+
+                int d = calendar.get(Calendar.DAY_OF_MONTH);
+                calendar.set(Calendar.DAY_OF_MONTH, d+1);
+                Date endDate = calendar.getTime();
+
+                logEntryList = db.logEntryDAO().getLogEntriesByDate(currentDate, endDate);
+
+                LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
+                personsListTextView.setAdapter(listAdapter);
+
             }
-
-
         });
 
         //--------------------------------------------------------------------------------------------
 
-        int day = 13;
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, 2023); // Set the year you want to get entries for
-        calendar.set(Calendar.MONTH, Calendar.APRIL); // Set the month you want to get entries for (January is 0)
-        calendar.set(Calendar.DAY_OF_MONTH, day); // Set the day you want to get entries for
-        calendar.set(Calendar.HOUR, 0); // Set the day you want to get entries for
-        calendar.set(Calendar.MINUTE, 0); // Set the day you want to get entries for
+        logEntryList = db.logEntryDAO().getAllLogEntries();
 
-        Date startDate = calendar.getTime(); // Get the Date object representing the day
-
-        calendar.set(Calendar.DAY_OF_MONTH, day+1); // Set the day you want to get entries for
-        Date endDate = calendar.getTime(); // Get the Date object representing the day
-
-        logEntryList = db.logEntryDAO().getLogEntriesByDate(startDate, endDate);
-        //logEntryList = db.logEntryDAO().getAllLogEntries();
         LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
         personsListTextView.setAdapter(listAdapter);
         personsListTextView.setClickable(true);
@@ -279,33 +256,6 @@ public class ListActivity extends AppCompatActivity {
         }
     }
 
-    //date pick time
-    //------------------------------------------------------------
-    private void showDatePickerDialog(final EditText dateField) {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        calendar.set(Calendar.YEAR, year);
-                        calendar.set(Calendar.MONTH, month);
-                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                        dateField.setText(dateFormat.format(calendar.getTime()));
-                    }
-                },
-                year,
-                month,
-                day
-        );
-        datePickerDialog.show();
-    }
 
     private String getFormattedDate(long dateInMillis) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
