@@ -20,6 +20,10 @@
             android:title="Daily log"
             android:icon="@drawable/baseline_list_24"/>
         <item
+            android:id="@+id/nav_map"
+            android:title="Toilet map"
+            android:icon="@drawable/baseline_fmd_good_24"/>
+        <item
             android:id="@+id/nav_settings"
             android:title="Settings"
             android:icon="@drawable/baseline_settings_24"/>

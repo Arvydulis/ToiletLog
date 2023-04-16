@@ -45,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //InstantiateAppBarAndNav();
-        navbar.InstantiateAppBarAndNav(this);
+        navbar.InstantiateAppBarAndNav(this, R.string.title_settings);
         drawerLayout = navbar.drawerLayout;
 
 

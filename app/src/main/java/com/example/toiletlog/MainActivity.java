@@ -27,7 +27,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button addBtn, listBtn, settingsBtn, tempBtn;
+    Button addBtn, listBtn, settingsBtn, mapBtn;
     TextView title;
 
     @SuppressLint("MissingInflatedId")
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         addBtn = findViewById(R.id.btn_addNew);
         listBtn = findViewById(R.id.btn_list);
         settingsBtn = findViewById(R.id.btn_settings);
+        mapBtn = findViewById(R.id.btn_map);
 
         title = findViewById(R.id.menuTitle);
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // show add entry activity
-                Toast.makeText(getApplicationContext(), "add entry", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "add entry", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getBaseContext(), NewItemActivity.class);
                 startActivity(intent);
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // show list activity
-                Toast.makeText(getApplicationContext(), "show list", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "show list", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getBaseContext(), ListActivity.class);
                 startActivity(intent);
@@ -95,12 +96,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // show settings activity
-                Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
 
                 //goes to settings
                 Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
                 startActivity(intent);
+            }
+        });
 
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // show settings activity
+                //Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
+                //goes to settings
+                Intent intent = new Intent(getBaseContext(), MapActivity.class);
+                startActivity(intent);
 
             }
         });

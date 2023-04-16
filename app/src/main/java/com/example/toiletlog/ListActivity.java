@@ -19,9 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -125,7 +127,7 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         //InstantiateAppBarAndNav();
-        navbar.InstantiateAppBarAndNav(this);
+        navbar.InstantiateAppBarAndNav(this, R.string.title_list);
         drawerLayout = navbar.drawerLayout;
 
         db = AppActivity.getDatabase();
@@ -164,6 +166,7 @@ public class ListActivity extends AppCompatActivity {
         //--------------------------------------------------------------------------------------------
 
         logEntryList = db.logEntryDAO().getAllLogEntries();
+
 
         LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
         personsListTextView.setAdapter(listAdapter);
@@ -261,9 +264,5 @@ public class ListActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         return dateFormat.format(new Date(dateInMillis));
     }
-
-    //------------------------------------------------------------
-
-
 
 }
