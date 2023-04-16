@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import org.joda.time.LocalDate;
@@ -68,6 +69,8 @@ public class ListActivity extends AppCompatActivity {
 
     Spinner dropDown;
 
+    FloatingActionButton btn_addNewEntry;
+
     List<LogEntry> SortDate(List<LogEntry> list){
         int n = list.size();
 
@@ -80,7 +83,7 @@ public class ListActivity extends AppCompatActivity {
             for (int j=i+1; j < n; j++)   //Find minimum
             {
                 Date t2 = list.get(j).getDate();//LocalDate.parse( list.get(j).getDate(), DateTimeFormat.forPattern("dd/MM/yyyy")) ;
-                if (t1.compareTo(t2) > 0)
+                if (t1.compareTo(t2) < 0)
                 {
                     m = list.get(j);
                     position = j;
@@ -107,7 +110,7 @@ public class ListActivity extends AppCompatActivity {
             {
                 Date t2 = list.get(j).getTime();//LocalTime.parse( list.get(j).getTime() ) ;
 
-                if (t1.compareTo(t2) > 0)
+                if (t1.compareTo(t2) < 0)
                 {
                     m = list.get(j);
                     position = j;
@@ -132,6 +135,7 @@ public class ListActivity extends AppCompatActivity {
 
         db = AppActivity.getDatabase();
         personsListTextView = (ListView) findViewById(R.id.list_view);
+        btn_addNewEntry = findViewById(R.id.btn_addNewEntry_listActivity);
 
         //--------------------------------------------------------------------------------------------
         //test for now
@@ -156,6 +160,7 @@ public class ListActivity extends AppCompatActivity {
                 Date endDate = calendar.getTime();
 
                 logEntryList = db.logEntryDAO().getLogEntriesByDate(currentDate, endDate);
+                logEntryList = SortTime(logEntryList);
 
                 LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
                 personsListTextView.setAdapter(listAdapter);
@@ -166,48 +171,48 @@ public class ListActivity extends AppCompatActivity {
         //--------------------------------------------------------------------------------------------
 
         logEntryList = db.logEntryDAO().getAllLogEntries();
-
+        SortDate(logEntryList);
 
         LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
         personsListTextView.setAdapter(listAdapter);
         personsListTextView.setClickable(true);
 
-        dropDown = findViewById(R.id.drop_down);
+//        dropDown = findViewById(R.id.drop_down);
+//
+//        // Create an ArrayAdapter using the string array and a default spinner layout
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.drop_down_array, android.R.layout.simple_spinner_item);
+//        // Specify the layout to use when the list of choices appears
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        // Apply the adapter to the spinner
+//        dropDown.setAdapter(adapter);
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.drop_down_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        dropDown.setAdapter(adapter);
-
-        dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // your code here
-                switch (adapter.getItem(position).toString()){
-                    case "Date":
-                        logEntryList = SortDate(logEntryList);
-                        break;
-                    case "Time":
-                        logEntryList = SortTime(logEntryList);
-
-                        break;
-                    case "Size":
-                        logEntryList = SortDate(logEntryList);
-                        break;
-                }
-                LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
-                personsListTextView.setAdapter(listAdapter);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
-
-        });
+//        dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                // your code here
+//                switch (adapter.getItem(position).toString()){
+//                    case "Date":
+//                        logEntryList = SortDate(logEntryList);
+//                        break;
+//                    case "Time":
+//                        logEntryList = SortTime(logEntryList);
+//
+//                        break;
+//                    case "Size":
+//                        logEntryList = SortDate(logEntryList);
+//                        break;
+//                }
+//                LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
+//                personsListTextView.setAdapter(listAdapter);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//                // your code here
+//            }
+//
+//        });
 
         personsListTextView.setOnItemClickListener( new AdapterView.OnItemClickListener(){
 
@@ -223,6 +228,14 @@ public class ListActivity extends AppCompatActivity {
             }
         });
         //getLogEntryList();
+
+        btn_addNewEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), NewItemActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -240,6 +253,9 @@ public class ListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ListActivity.this);
+                Message.ShowNotification(ListActivity.this, getApplicationContext(),
+                        "Test notification", "Hello " + prefs.getString("name", "") + "!!!");
                 return true;
             default:
                 // If we got here, the user's action was not recognized.

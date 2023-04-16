@@ -28,40 +28,69 @@
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp">
+                android:layout_height="match_parent">
 
-                <TextView
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:padding="5dp">-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="Sort by: "-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:textSize="20dp"/>-->
+
+<!--                        <Spinner-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="40dp"-->
+<!--                            android:id="@+id/drop_down"-->
+<!--                            android:textSize="20dp"/>-->
+<!--                    </LinearLayout>-->
+
+
+                    <CalendarView
+                        android:id="@+id/calendarView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle"
+                        android:backgroundTint="@color/colorPrimaryLightVariant"
+
+                        />
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/list_view"
+                        tools:listitem="@layout/list_item"/>
+                </LinearLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btn_addNewEntry_listActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sort by: "
-                    android:layout_gravity="center_vertical"
-                    android:textSize="20dp"/>
-
-                <Spinner
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/drop_down"
-                    android:textSize="20dp"/>
-            </LinearLayout>
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="25dp"
+                    android:clickable="true"
+                    app:srcCompat="@drawable/add_ic"
+                    />
 
 
-            <CalendarView
-                android:id="@+id/calendarView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/list_view"
-                tools:listitem="@layout/list_item"/>
-
-
+            </FrameLayout>
         </LinearLayout>
+
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
@@ -71,6 +100,8 @@
             app:layout_constraintEnd_toStartOf="@+id/toolbar"
             app:menu="@menu/nav_menu"
             app:headerLayout="@layout/nav_header"/>
+
+
 
 
 

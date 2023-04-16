@@ -3,6 +3,7 @@ package com.example.toiletlog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.navigation.NavigationView;
@@ -24,6 +25,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
+
 import com.example.toiletlog.databinding.ActivityDailyLogBinding;
 
 public class DailyLog extends AppCompatActivity {
@@ -57,6 +60,9 @@ public class DailyLog extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(DailyLog.this);
+                Message.ShowNotification(DailyLog.this, getApplicationContext(),
+                        "Test notification", "Hello " + prefs.getString("name", "") + "!!!");
                 return true;
             default:
                 // If we got here, the user's action was not recognized.

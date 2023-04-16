@@ -264,6 +264,9 @@ public class NewItemActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewItemActivity.this);
+                Message.ShowNotification(NewItemActivity.this, getApplicationContext(),
+                        "Test notification", "Hello " + prefs.getString("name", "") + "!!!");
                 return true;
             default:
                 // If we got here, the user's action was not recognized.

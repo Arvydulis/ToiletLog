@@ -135,7 +135,9 @@ public class SingleEntryViewActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Message.ShowToast(getApplicationContext(), "show");
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(SingleEntryViewActivity.this);
+                Message.ShowNotification(SingleEntryViewActivity.this, getApplicationContext(),
+                        "Test notification", "Hello " + prefs.getString("name", "") + "!!!");
                 return true;
             default:
                 // If we got here, the user's action was not recognized.

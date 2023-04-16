@@ -292,6 +292,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MapActivity.this);
+                Message.ShowNotification(MapActivity.this, getApplicationContext(),
+                        "Test notification", "Hello " + prefs.getString("name", "") + "!!!");
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
