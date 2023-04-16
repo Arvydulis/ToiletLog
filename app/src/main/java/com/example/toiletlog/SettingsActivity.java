@@ -66,9 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)){
-            return true;
-        }
+
 
         switch (item.getItemId()) {
             case R.id.action_settings:
