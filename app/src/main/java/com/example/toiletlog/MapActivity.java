@@ -438,7 +438,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 geocoder = new Geocoder(MapActivity.this, Locale.getDefault());
 
                 GetLastLocation(false);
-                //map.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 17.0f));
 
             }
             else {
@@ -623,7 +622,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         LocationData data = new LocationData(title, latitude, longitude);
         db_ref.child(key.replace(".", "")).setValue(data);
-        //AddMarkerToMap(data);
     }
 
     void RemoveLocation(){

@@ -32,14 +32,43 @@
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ListView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/log_list"
-                >
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
 
+                <EditText
+                    android:id="@+id/setTimeNotif"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="#d4d4d4"
+                    android:hint="Select Time..."
+                    android:padding="15dp"
+                    android:textColor="#897"
+                    android:textColorHint="#090"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:focusable="false"/>
 
-            </ListView>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Repeat"
+                    android:id="@+id/cb_repeat"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Set"
+                    android:id="@+id/btn_setNotif"
+                     />
+
+            </LinearLayout>
 
         </LinearLayout>
 

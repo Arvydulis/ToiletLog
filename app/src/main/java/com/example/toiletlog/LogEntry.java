@@ -32,6 +32,10 @@ public class LogEntry {
     @ColumnInfo(name = "size")
     private String size;
 
+    @NonNull
+    @ColumnInfo(name = "location")
+    private String location;
+
     public void setId(@NonNull long id) {
         this.id = id;
     }
@@ -74,5 +78,14 @@ public class LogEntry {
     @NonNull
     public String getSize() {
         return size;
+    }
+
+    public void setLocation(@NonNull String location) {
+        this.location = location;
+    }
+
+    @NonNull
+    public String getLocation() {
+        return location;
     }
 }

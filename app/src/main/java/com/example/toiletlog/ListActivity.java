@@ -97,6 +97,39 @@ public class ListActivity extends AppCompatActivity {
         return list;
     }
 
+    List<LogEntry> SortDateAndTIme(List<LogEntry> list){
+        int n = list.size();
+
+        for(int i=0; i < n; i++) //For each sublist
+        {
+            LogEntry m = list.get(i);
+            int position = i;
+            Date t1 = list.get(i).getDate();//LocalDate.parse( list.get(i).getDate(), DateTimeFormat.forPattern("dd/MM/yyyy")) ;
+            Date time1 = list.get(i).getTime();
+
+            for (int j=i+1; j < n; j++)   //Find minimum
+            {
+                Date t2 = list.get(j).getDate();//LocalDate.parse( list.get(j).getDate(), DateTimeFormat.forPattern("dd/MM/yyyy")) ;
+                Date time2 = list.get(j).getTime();
+                if (t1.compareTo(t2) < 0)
+                {
+                    m = list.get(j);
+                    position = j;
+                } else if (t1.equals(t2)) {
+                    if (time1.compareTo(time2) < 0){
+                        m = list.get(j);
+                        position = j;
+                    }
+                }
+            }
+            LogEntry temp = list.get(position);      //Swap
+            list.set(position, list.get(i));
+            list.set(i, temp);
+        }
+
+        return list;
+    }
+
     List<LogEntry> SortTime(List<LogEntry> list){
         int n = list.size();
 
@@ -149,14 +182,15 @@ public class ListActivity extends AppCompatActivity {
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
                 Calendar calendar = Calendar.getInstance();
 
-                calendar.set(year, month, dayOfMonth);
+                calendar.set(year, month, dayOfMonth, 0, 0);
 
-                calendar.set(Calendar.HOUR, 0);
-                calendar.set(Calendar.MINUTE, 0);
+                //calendar.set(Calendar.HOUR, 0);
+                //calendar.set(Calendar.MINUTE, 0);
                 currentDate = calendar.getTime();
 
-                int d = calendar.get(Calendar.DAY_OF_MONTH);
-                calendar.set(Calendar.DAY_OF_MONTH, d+1);
+//                int d = calendar.get(Calendar.DAY_OF_MONTH);
+//                calendar.set(Calendar.DAY_OF_MONTH, d+1);
+                calendar.set(year, month, dayOfMonth+1, 0, 0);
                 Date endDate = calendar.getTime();
 
                 logEntryList = db.logEntryDAO().getLogEntriesByDate(currentDate, endDate);
@@ -171,7 +205,7 @@ public class ListActivity extends AppCompatActivity {
         //--------------------------------------------------------------------------------------------
 
         logEntryList = db.logEntryDAO().getAllLogEntries();
-        SortDate(logEntryList);
+        SortDateAndTIme(logEntryList);
 
         LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
         personsListTextView.setAdapter(listAdapter);
@@ -223,6 +257,7 @@ public class ListActivity extends AppCompatActivity {
                 intent.putExtra("time", logEntryList.get(i).getTime());
                 intent.putExtra("type", logEntryList.get(i).getType());
                 intent.putExtra("size", logEntryList.get(i).getSize());
+                intent.putExtra("location", logEntryList.get(i).getLocation());
                 intent.putExtra("id", logEntryList.get(i).getId());
                 startActivity(intent);
             }

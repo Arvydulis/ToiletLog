@@ -6,6 +6,7 @@ import static android.provider.Settings.System.getString;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -28,6 +29,7 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 public class Message extends AppCompatActivity {
@@ -39,8 +41,10 @@ public class Message extends AppCompatActivity {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
-    public static void ShowNotification(Activity activity, Context appContext, String notifTitle, String notifText) {
-        boolean getNotifs = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("notification", true);
+    public static void ShowNotification(Activity activity, Context appContext,
+                                        String notifTitle, String notifText) {
+        boolean getNotifs = PreferenceManager.getDefaultSharedPreferences(activity)
+                .getBoolean("notification", true);
 
         if(getNotifs) {
             // Create notification channel if running on API 26 or higher
@@ -49,7 +53,8 @@ public class Message extends AppCompatActivity {
                 String description = "My channel";
                 int importance = NotificationManager.IMPORTANCE_HIGH;
                 NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-                NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
+                NotificationManager notificationManager =
+                        activity.getSystemService(NotificationManager.class);
 
                 notificationManager.createNotificationChannel(channel);
             }
@@ -57,7 +62,8 @@ public class Message extends AppCompatActivity {
             // Create an explicit intent for an Activity in your app
             Intent intent = new Intent(activity.getBaseContext(), ListActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0,
+                    intent, PendingIntent.FLAG_IMMUTABLE);
 
             // Create notification
             NotificationCompat.Builder builder = new NotificationCompat.Builder(appContext, CHANNEL_ID)
@@ -70,7 +76,8 @@ public class Message extends AppCompatActivity {
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(appContext);
 
-            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
                         activity,
                         new String[]{Manifest.permission.POST_NOTIFICATIONS},
@@ -80,5 +87,32 @@ public class Message extends AppCompatActivity {
             }
             notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
+    }
+
+    public static void SetNotif(Context context, Activity activity, int hour, int minute, boolean repeat){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel channel1 = new NotificationChannel("Daily", "Daily", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = activity.getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel1);
+
+        }
+
+
+        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        if(repeat)
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        else
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 }

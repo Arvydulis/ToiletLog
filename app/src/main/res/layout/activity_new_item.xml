@@ -89,6 +89,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/setDate" />
 
+                <Spinner
+                    android:id="@+id/location_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/setTime"
+                    android:layout_marginVertical="5dp"
+                    />
+
                 <Button
                     android:id="@+id/button"
                     android:layout_width="wrap_content"
@@ -231,7 +239,7 @@
                     android:text="Type"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setTime" />
+                    app:layout_constraintTop_toBottomOf="@+id/location_list" />
 
                 <TextView
                     android:id="@+id/textViewSize"
@@ -244,6 +252,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/types" />
+
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

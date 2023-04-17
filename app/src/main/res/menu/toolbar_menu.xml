@@ -10,4 +10,8 @@
         android:title="Send notification"
         app:showAsAction="never"
         />
+    <item android:id="@+id/set_notif"
+        android:title="Set notification"
+        app:showAsAction="never"
+        />
     </menu>

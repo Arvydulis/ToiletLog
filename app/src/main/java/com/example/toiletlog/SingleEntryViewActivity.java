@@ -38,7 +38,7 @@ public class SingleEntryViewActivity extends AppCompatActivity {
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
 
-    TextView dateView, timeView, typeView, sizeView;
+    TextView dateView, timeView, typeView, sizeView, locationView;
     FloatingActionButton backBtn, deleteBtn;
 
     Navbar navbar = new Navbar();
@@ -58,6 +58,7 @@ public class SingleEntryViewActivity extends AppCompatActivity {
         timeView = findViewById(R.id.single_entry_time);
         typeView = findViewById(R.id.single_entry_type);
         sizeView = findViewById(R.id.single_entry_size);
+        locationView = findViewById(R.id.single_entry_location);
         backBtn = findViewById(R.id.back_btn);
         deleteBtn = findViewById(R.id.delete_btn);
 
@@ -72,6 +73,7 @@ public class SingleEntryViewActivity extends AppCompatActivity {
             timeView.setText(sdf2.format(myTime));
             typeView.setText(intent.getStringExtra("type"));
             sizeView.setText(intent.getStringExtra("size"));
+            locationView.setText(intent.getStringExtra("location"));
         }
 
         backBtn.setOnClickListener(new View.OnClickListener() {

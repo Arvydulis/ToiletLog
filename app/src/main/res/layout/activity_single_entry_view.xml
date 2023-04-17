@@ -124,6 +124,28 @@
                     android:gravity="center_horizontal"
                     android:text="Big"
                     android:textSize="18sp" />
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="350dp"
+                    android:layout_height="3dp"
+                    android:layout_gravity="center_horizontal"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="Location"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/single_entry_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="No location"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 

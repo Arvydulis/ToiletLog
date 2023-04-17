@@ -75,6 +75,11 @@ public class SettingsActivity extends AppCompatActivity {
                 Message.ShowNotification(SettingsActivity.this, getApplicationContext(),
                         "Test notification", "Hello " + prefs.getString("name", "") + "!!!");
                 return true;
+            case R.id.set_notif:
+                // User chose the "Settings" item, show the app settings UI...
+                Intent intent = new Intent(getBaseContext(), TestActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.

@@ -4,23 +4,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.TimePicker;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 //import android.widget.Toolbar;
 
 public class TestActivity extends AppCompatActivity {
@@ -28,6 +32,12 @@ public class TestActivity extends AppCompatActivity {
     Toolbar toolbar;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
+
+    Calendar time;
+    TimePickerDialog timePickerDialog;
+    TextView timePickerView;
+    CheckBox cb;
+    Button setBtn;
 
     Navbar navbar = new Navbar();
 
@@ -38,6 +48,25 @@ public class TestActivity extends AppCompatActivity {
 
         //InstantiateAppBarAndNav();
         navbar.InstantiateAppBarAndNav(this, R.string.title_main_menu);
+
+        timePickerView = findViewById(R.id.setTimeNotif);
+        cb = findViewById(R.id.cb_repeat);
+        setBtn = findViewById(R.id.btn_setNotif);
+
+        timePickerView.setOnClickListener(timePickerOnClick);
+        setBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (time != null){
+                    Message.SetNotif(getApplicationContext(), TestActivity.this,
+                            time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), cb.isChecked());
+                    Message.ShowToast(getApplicationContext(), "Notification set");
+                }
+                else{
+                    Message.ShowToast(getApplicationContext(), "Failed");
+                }
+            }
+        });
 
     }
 
@@ -72,6 +101,31 @@ public class TestActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+    View.OnClickListener timePickerOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            // calender class's instance and get current date , month and year from calender
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+            // time picker dialog
+            timePickerDialog = new TimePickerDialog(TestActivity.this,
+                    new TimePickerDialog.OnTimeSetListener() {
+
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+                            timePickerView.setText(hourOfDay + ":" + minute);
+                            c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            c.set(Calendar.MINUTE, minute);
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                            timePickerView.setText(sdf.format(c.getTime()));
+                            time = c;
+                        }
+                    }, hour, minute, DateFormat.is24HourFormat(TestActivity.this));
+            timePickerDialog.show();
+        }
+    };
 
 
 }
