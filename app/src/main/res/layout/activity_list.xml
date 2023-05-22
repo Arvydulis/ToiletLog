@@ -64,7 +64,7 @@
                         android:id="@+id/calendarView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rectangle"
+                        android:background="@drawable/rectangle_round_bottom"
                         android:backgroundTint="@color/colorPrimaryLightVariant"
 
                         />
