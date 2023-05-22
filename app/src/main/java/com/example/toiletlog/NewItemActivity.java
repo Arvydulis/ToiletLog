@@ -107,8 +107,11 @@ public class NewItemActivity extends AppCompatActivity {
                 String dateT = dateEditText.getText().toString().trim();
                 String timeT = timeEditText.getText().toString().trim();
 
-                if (TextUtils.isEmpty(dateT) || TextUtils.isEmpty(timeT) || TextUtils.isEmpty(type) || TextUtils.isEmpty(size)) {
-                    Toast.makeText(getApplicationContext(), "Nae/Surname/Phone Number should not be empty", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(dateT) || TextUtils.isEmpty(timeT) || TextUtils.isEmpty(type)
+                        || TextUtils.isEmpty(size)) {
+                    Toast.makeText(getApplicationContext(),
+                            "Nae/Surname/Phone Number should not be empty",
+                            Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
