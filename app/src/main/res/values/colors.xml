@@ -12,4 +12,6 @@
     <color name="colorPrimaryLight">#FFF0BE78</color>
     <color name="colorPrimaryLightVariant">#C5835F</color>
     <color name="colorPrimaryVariant">#78270F</color>
+    <color name="colorPrimaryVariant2">#D35A35</color>
+
 </resources>
