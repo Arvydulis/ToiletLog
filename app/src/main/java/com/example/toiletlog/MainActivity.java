@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button addBtn, listBtn, settingsBtn, mapBtn;
+    LinearLayout addBtn, listBtn, settingsBtn, mapBtn;
     TextView title;
 
     @SuppressLint("MissingInflatedId")
