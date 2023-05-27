@@ -68,18 +68,21 @@ public class ChartActivity extends AppCompatActivity {
         GetCurrDate();
 
         // chart options
+        chart.setBackgroundColor(Color.WHITE);
         chart.setDragEnabled(false);
         chart.setDescription(null);
 
         typePieChart.setBackgroundColor(Color.GRAY);
-        typePieChart.setHoleRadius(40);
-        typePieChart.setTransparentCircleRadius(45);
-        typePieChart.getLegend().setEnabled(false);
+        typePieChart.setHoleRadius(30);
+        typePieChart.setTransparentCircleRadius(35);
+        typePieChart.getLegend().setWordWrapEnabled(true);
+        typePieChart.setDrawEntryLabels(false);
+        //typePieChart.getLegend().setEnabled(false);
         typePieChart.setDescription(null);
 
         sizePieChart.setBackgroundColor(Color.GRAY);
-        sizePieChart.setHoleRadius(40);
-        sizePieChart.setTransparentCircleRadius(45);
+        sizePieChart.setHoleRadius(30);
+        sizePieChart.setTransparentCircleRadius(35);
         sizePieChart.getLegend().setEnabled(false);
         sizePieChart.setDescription(null);
 
@@ -92,6 +95,7 @@ public class ChartActivity extends AppCompatActivity {
         xAxis.setAxisMinimum(0);
         xAxis.setAxisMaximum(getDayCountFromMonth());
         xAxis.setGranularity(1);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         leftAxis.setAxisMinimum(0);
         leftAxis.setGranularityEnabled(true);
         leftAxis.setGranularity(1);
