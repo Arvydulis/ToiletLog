@@ -14,12 +14,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -70,6 +72,7 @@ public class ListActivity extends AppCompatActivity {
     Spinner dropDown;
 
     FloatingActionButton btn_addNewEntry;
+    private Button btn_showAll;
 
     List<LogEntry> SortDate(List<LogEntry> list){
         int n = list.size();
@@ -169,6 +172,7 @@ public class ListActivity extends AppCompatActivity {
         db = AppActivity.getDatabase();
         personsListTextView = (ListView) findViewById(R.id.list_view);
         btn_addNewEntry = findViewById(R.id.btn_addNewEntry_listActivity);
+        btn_showAll = findViewById(R.id.showAll);
 
         //--------------------------------------------------------------------------------------------
         //test for now
@@ -198,7 +202,7 @@ public class ListActivity extends AppCompatActivity {
 
                 LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
                 personsListTextView.setAdapter(listAdapter);
-
+                btn_showAll.setVisibility(View.VISIBLE);
             }
         });
 
@@ -269,6 +273,18 @@ public class ListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), NewItemActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btn_showAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logEntryList = db.logEntryDAO().getAllLogEntries();
+                logEntryList = SortTime(logEntryList);
+
+                LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
+                personsListTextView.setAdapter(listAdapter);
+                btn_showAll.setVisibility(View.GONE);
             }
         });
     }

@@ -69,6 +69,13 @@
 
                         />
 
+                    <Button
+                        android:id="@+id/showAll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Show all"
+                        android:visibility="gone" />
+
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
