@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +34,8 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.shrikanthravi.collapsiblecalendarview.data.Day;
+import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -55,7 +58,8 @@ public class ListActivity extends AppCompatActivity {
 
     //Calendar things
     //---------------------------------------------------
-    CalendarView calendarView;
+    //CalendarView calendarView;
+    CollapsibleCalendar collapsibleCalendar;
     Date currentDate;
 
     //---------------------------------------------------
@@ -179,14 +183,33 @@ public class ListActivity extends AppCompatActivity {
         //date pick thing
         //--------------------------------------------------------------------------------------------
 
-        calendarView = findViewById(R.id.calendarView);
+        collapsibleCalendar = findViewById(R.id.calendarView);
 
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        collapsibleCalendar.setCalendarListener(new CollapsibleCalendar.CalendarListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+            public void onWeekChange(int i) {
+
+            }
+
+            @Override
+            public void onMonthChange() {
+
+            }
+
+            @Override
+            public void onItemClick(@NonNull View view) {
+
+            }
+
+            @Override
+            public void onDaySelect() {
+                Day day = collapsibleCalendar.getSelectedDay();
+                Log.d(getClass().getName(), "Selected Day: "
+                        + day.getYear() + "/" + (day.getMonth() + 1) + "/" + day.getDay());
+
                 Calendar calendar = Calendar.getInstance();
 
-                calendar.set(year, month, dayOfMonth, 0, 0);
+                calendar.set(day.getYear(), day.getMonth() , day.getDay(), 0, 0);
 
                 //calendar.set(Calendar.HOUR, 0);
                 //calendar.set(Calendar.MINUTE, 0);
@@ -194,7 +217,7 @@ public class ListActivity extends AppCompatActivity {
 
 //                int d = calendar.get(Calendar.DAY_OF_MONTH);
 //                calendar.set(Calendar.DAY_OF_MONTH, d+1);
-                calendar.set(year, month, dayOfMonth+1, 0, 0);
+                calendar.set(day.getYear(), day.getMonth() , day.getDay()+1, 0, 0);
                 Date endDate = calendar.getTime();
 
                 logEntryList = db.logEntryDAO().getLogEntriesByDate(currentDate, endDate);
@@ -204,7 +227,46 @@ public class ListActivity extends AppCompatActivity {
                 personsListTextView.setAdapter(listAdapter);
                 btn_showAll.setVisibility(View.VISIBLE);
             }
+
+            @Override
+            public void onDataUpdate() {
+
+            }
+
+            @Override
+            public void onDayChanged() {
+            }
+
+            @Override
+            public void onClickListener() {
+
+            }
         });
+
+//        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//            @Override
+//            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+//                Calendar calendar = Calendar.getInstance();
+//
+//                calendar.set(year, month, dayOfMonth, 0, 0);
+//
+//                //calendar.set(Calendar.HOUR, 0);
+//                //calendar.set(Calendar.MINUTE, 0);
+//                currentDate = calendar.getTime();
+//
+////                int d = calendar.get(Calendar.DAY_OF_MONTH);
+////                calendar.set(Calendar.DAY_OF_MONTH, d+1);
+//                calendar.set(year, month, dayOfMonth+1, 0, 0);
+//                Date endDate = calendar.getTime();
+//
+//                logEntryList = db.logEntryDAO().getLogEntriesByDate(currentDate, endDate);
+//                logEntryList = SortTime(logEntryList);
+//
+//                LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
+//                personsListTextView.setAdapter(listAdapter);
+//                btn_showAll.setVisibility(View.VISIBLE);
+//            }
+//        });
 
         //--------------------------------------------------------------------------------------------
 
@@ -320,7 +382,9 @@ public class ListActivity extends AppCompatActivity {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
-            super.onBackPressed();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 

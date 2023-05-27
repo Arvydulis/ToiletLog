@@ -364,7 +364,9 @@ public class NewItemActivity extends AppCompatActivity {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
-            super.onBackPressed();
+            Intent intent = new Intent(this, ListActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 

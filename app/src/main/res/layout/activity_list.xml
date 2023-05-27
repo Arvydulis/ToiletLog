@@ -60,14 +60,21 @@
 <!--                    </LinearLayout>-->
 
 
-                    <CalendarView
-                        android:id="@+id/calendarView"
+<!--                    <CalendarView-->
+<!--                        android:id="@+id/calendarView"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@drawable/rectangle_round_bottom"-->
+<!--                        android:backgroundTint="@color/colorPrimaryLightVariant"-->
+
+<!--                        />-->
+
+                    <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rectangle_round_bottom"
-                        android:backgroundTint="@color/colorPrimaryLightVariant"
-
-                        />
+                        android:id="@+id/calendarView"
+                        app:primaryColor="@color/colorPrimaryLightVariant">
+                    </com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar>
 
                     <Button
                         android:id="@+id/showAll"

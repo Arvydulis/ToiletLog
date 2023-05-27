@@ -1,9 +1,11 @@
 package com.example.toiletlog;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -301,6 +303,20 @@ public class ChartActivity extends AppCompatActivity {
 
         sizePieChart.notifyDataSetChanged(); // let the chart know it's data changed
         sizePieChart.invalidate(); // refresh
+    }
+
+    @Override
+    public void onBackPressed() {
+//        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+//            drawerLayout.closeDrawer(GravityCompat.START);
+//        }else {
+//            Intent intent = new Intent(this, ListActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
