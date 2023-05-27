@@ -1,5 +1,9 @@
 package com.example.toiletlog;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -27,7 +31,9 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -76,6 +82,8 @@ import java.util.Map;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    public static final int CAMERA_PERM_CODE = 101;
+    public static final int CAMERA_REQUEST_CALL = 102;
     String androidID;
 
     DrawerLayout drawerLayout;
@@ -139,6 +147,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
+
+
+    //---------------test------------------
+    Button test_cam;
+    ActivityResultLauncher<Intent> mTakePhotoLauncher;
+    //---------------test-----------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,6 +245,36 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         prefs = getSharedPreferences("locationsSharedPrefs", MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
+        mTakePhotoLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+
+                    }
+                }
+        );
+
+        test_cam = findViewById(R.id.cam_test);
+        test_cam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AskCameraPermission();
+            }
+        });
+    }
+
+    void AskCameraPermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+        }else {
+            OpenCamera();
+        }
+    }
+
+    void OpenCamera(){
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        mTakePhotoLauncher.launch(cameraIntent);
     }
 
 
@@ -553,6 +597,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
             else {
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(kaunas, 10.0f));
+            }
+        } else if (requestCode == CAMERA_PERM_CODE) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                OpenCamera();
+            }else{
+                Message.ShowToast(getApplicationContext(), "Camera Permission is required to use camera!");
             }
         }
 

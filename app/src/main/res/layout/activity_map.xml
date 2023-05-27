@@ -194,6 +194,16 @@
 
                         <!-- image scroll view -->
 
+                        <Button
+                            android:id="@+id/cam_test"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="5dp"
+                            android:backgroundTint="@color/colorPrimaryLightVariant"
+                            android:elevation="10dp"
+                            android:text="cam" />
+
                         <com.google.android.material.divider.MaterialDivider
                             android:layout_width="350dp"
                             android:layout_height="3dp"
