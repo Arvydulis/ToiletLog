@@ -137,54 +137,154 @@
                 </LinearLayout>
 
                 <FrameLayout
+                    android:id="@+id/info_panel"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="580dp"
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/slide_pannel_bg"
-                    android:paddingVertical="10dp"
 
-                    android:id="@+id/info_panel">
+                    android:paddingVertical="10dp">
 
                     <ImageView
+                        android:id="@+id/btn_close_info_panel"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:id="@+id/btn_close_info_panel"
-                        android:src="@drawable/baseline_close_24"
-                        android:layout_marginEnd="10dp"
                         android:layout_gravity="top|end"
-                        />
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/baseline_close_24" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/address_field"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:layout_marginTop="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center"
+                            android:paddingHorizontal="30dp"
                             android:text="Address"
                             android:textColor="@color/white"
                             android:textSize="25sp"
-                            android:textStyle="bold"
+                            android:textStyle="bold" />
+
+
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_width="350dp"
+                            android:layout_height="3dp"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginBottom="10dp"
-                            android:paddingHorizontal="30dp"
-                            android:gravity="center"/>
-                        <Button
+                            android:layout_marginVertical="5dp"
+                            app:dividerColor="@color/colorPrimaryVariant" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginVertical="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="Images"
+                            android:textColor="@color/white"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+                        <!-- image scroll view -->
+
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_width="350dp"
+                            android:layout_height="3dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginVertical="5dp"
+                            app:dividerColor="@color/colorPrimaryVariant" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginVertical="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="Rating"
+                            android:textColor="@color/white"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+                        <!-- rating view -->
+                        <TextView
+                            android:id="@+id/rating_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="3,5"
+                            android:textColor="@color/white"
+                            android:textSize="25sp" />
+
+                        <RatingBar
+                            android:id="@+id/general_rating_bar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Remove"
+                            android:contentDescription="rating"
+                            android:isIndicator="true"
+                            android:rating="3" />
+
+                        <TextView
+                            android:id="@+id/review_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="10dp"
+                            android:text="Reviews: 0"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
+
+                        <Button
+                            android:id="@+id/btn_rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="5dp"
                             android:backgroundTint="@color/colorPrimaryLightVariant"
                             android:elevation="10dp"
-                            android:id="@+id/btn_remove_location"/>
+                            android:text="Rate" />
+
+
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_width="350dp"
+                            android:layout_height="3dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginVertical="5dp"
+                            app:dividerColor="@color/colorPrimaryVariant" />
+
+
+                    </LinearLayout>
+
+                    <!-- buttons layout -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:orientation="horizontal">
+
+
+                        <Button
+                            android:id="@+id/btn_remove_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:backgroundTint="@color/colorPrimaryLightVariant"
+                            android:elevation="10dp"
+                            android:text="Remove" />
+
                     </LinearLayout>
 
 
-
-
                 </FrameLayout>
+
+
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/add_location"
