@@ -16,6 +16,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -108,6 +109,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     Button btn_cancel_rate;
     Button btn_confirm_rate;
     RatingBar ratingBar;
+    TextView already_reviewed;
     double selectedRatingValue = 0;
 
 
@@ -134,6 +136,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     LocationData selectedLocationData = null;
 
     AlertDialog dialog;
+
+    SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,6 +214,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         btn_cancel_rate = customDialog.findViewById(R.id.btn_canel_rate);
         btn_confirm_rate = customDialog.findViewById(R.id.btn_confirm_rate);
         ratingBar = customDialog.findViewById(R.id.rate_bar);
+        already_reviewed = customDialog.findViewById(R.id.already_reviewed);
         dialog = dialogBuilder.create();
 
         btn_cancel_rate.setOnClickListener(new View.OnClickListener() {
@@ -222,6 +228,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         ratingBar.setOnRatingBarChangeListener(changeRatingBarListener);
 
         androidID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        prefs = getSharedPreferences("locationsSharedPrefs", MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
     }
 
@@ -628,7 +636,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
 
-                selectedRatingValue = 2.5;
+                if (prefs.contains(GetPrefKey())){
+                    int i = prefs.getInt(GetPrefKey(), 0);
+                    selectedRatingValue = selectedLocationData.ratingItemList.get(i).getRating();
+                    btn_confirm_rate.setText("Update");
+                    already_reviewed.setVisibility(View.VISIBLE);
+                }else {
+                    selectedRatingValue = 2.5;
+                    btn_confirm_rate.setText("Confirm");
+                    already_reviewed.setVisibility(View.GONE);
+                }
+
                 ratingBar.setRating((float) selectedRatingValue);
 
                 UpdateLocationInfo(selectedLocationData);
@@ -639,7 +657,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     View.OnClickListener confirmRateBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            selectedLocationData.ratingItemList.add(new RatingItem(selectedRatingValue));
+            if (prefs.contains(GetPrefKey())){
+                selectedLocationData.ratingItemList.set(prefs.getInt(GetPrefKey(), 0), new RatingItem(selectedRatingValue));
+            }else {
+                selectedLocationData.ratingItemList.add(new RatingItem(selectedRatingValue));
+                prefsEditor.putInt(GetPrefKey(), selectedLocationData.ratingItemList.size()-1);
+                prefsEditor.commit();
+            }
             UpdateLocationInfo(selectedLocationData);
             GetSingleLocation(currentlySelectedMarker);
             dialog.cancel();
@@ -653,6 +677,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     };
 
+    String GetPrefKey(){
+
+        return androidID + selectedLocationData.getTitle();
+    }
+
     void ShowDeleteLocationDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MapActivity.this);
         alertDialogBuilder.setTitle("Remove selected location");
@@ -663,6 +692,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         //Delete item from db
                         if (currentlySelectedMarker != null){
                             RemoveLocation();
+                            map.getUiSettings().setAllGesturesEnabled(true);
                             Message.ShowToast(getApplicationContext(), "removed");
                         }else {
                             Message.ShowToast(getApplicationContext(), "No marker selected");
