@@ -16,16 +16,19 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,8 +36,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -42,8 +45,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -62,8 +63,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +74,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    String androidID;
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -94,8 +99,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     FrameLayout infoPanel;
     TextView addressField;
     ImageView closeInfoPanelBtn;
-    Button btn_removeLocation;
+    Button btn_removeLocation, btn_rate;
     Marker currentlySelectedMarker;
+    RatingBar generalRatingBar;
+    TextView txt_rate, txt_reviewCount;
+
+
+    Button btn_cancel_rate;
+    Button btn_confirm_rate;
+    RatingBar ratingBar;
+    double selectedRatingValue = 0;
+
 
     DatabaseReference db_ref;
     List<LocationData> locations = new ArrayList<>();
@@ -116,6 +130,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     Geocoder geocoder;
     List<Address> address;
     private LatLng lastLocation;
+
+    LocationData selectedLocationData = null;
+
+    AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,11 +166,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         addressField = findViewById(R.id.address_field);
         closeInfoPanelBtn = findViewById(R.id.btn_close_info_panel);
         btn_removeLocation = findViewById(R.id.btn_remove_location);
+        btn_rate = findViewById(R.id.btn_rate);
+        generalRatingBar = findViewById(R.id.general_rating_bar);
+        txt_rate = findViewById(R.id.rating_label);
+        txt_reviewCount = findViewById(R.id.review_count);
+
         currentlySelectedMarker = null;
 
         //InstantiateAppBarAndNav();
         navbar.InstantiateAppBarAndNav(this, R.string.title_map);
-        ;
+
         db_ref = FirebaseDatabase.getInstance().getReference("Locations");
 //        LocationData vilnius = new LocationData("Vilnius", 54.687978, 25.278062);
 //        db_ref.child(vilnius.getTitle()).setValue(vilnius);
@@ -174,8 +197,32 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         btn_chooseLocation.setOnClickListener(addChosenLocationListener);
         btn_confirmLocation.setOnClickListener(confirmLocationListener);
         btn_cancelLocation.setOnClickListener(cancelLocationListener);
+
         closeInfoPanelBtn.setOnClickListener(closeInfoPanelBtnListener);
         btn_removeLocation.setOnClickListener(removeLocationBtnListener);
+        btn_rate.setOnClickListener(rateBtnListener);
+
+
+        View customDialog = LayoutInflater.from(MapActivity.this).inflate(R.layout.custom_rating_layout, null);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MapActivity.this);
+        dialogBuilder.setView(customDialog);
+        btn_cancel_rate = customDialog.findViewById(R.id.btn_canel_rate);
+        btn_confirm_rate = customDialog.findViewById(R.id.btn_confirm_rate);
+        ratingBar = customDialog.findViewById(R.id.rate_bar);
+        dialog = dialogBuilder.create();
+
+        btn_cancel_rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+
+        btn_confirm_rate.setOnClickListener(confirmRateBtnListener);
+        ratingBar.setOnRatingBarChangeListener(changeRatingBarListener);
+
+        androidID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
     }
 
 
@@ -209,6 +256,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.exists()) {
                     LocationData data = snapshot.getValue(LocationData.class);
+                    if (data.getRatingItemList() == null){
+                        data.ratingItemList = new ArrayList<>();
+                    }
 //                    locations.add(data);
                     locations2.put(snapshot.getKey(), data);
                     AddMarkerToMap(data, snapshot.getKey());
@@ -225,6 +275,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if (currentlySelectedMarker != null){
                     currentlySelectedMarker.remove();
                     currentlySelectedMarker = null;
+                    selectedLocationData = null;
                     SetInfoPanelVisible(false);
                     SetAddLocationBtnVisible(true);
                 }
@@ -251,17 +302,65 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
-                if (!(isConfirmBtnContainerVisible || isLocationBtnContainerVisible || isLocationSetterVisible)) {
+                if (!(isConfirmBtnContainerVisible || isLocationBtnContainerVisible || isLocationSetterVisible || infoPanel.getVisibility() == View.VISIBLE)) {
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 18.0f));
+                    googleMap.getUiSettings().setAllGesturesEnabled(false);
 
-                    addressField.setText(GetAddressStreet(marker.getPosition()));
-                    SetInfoPanelVisible(true);
-                    SetAddLocationBtnVisible(false);
-                    currentlySelectedMarker = marker;
+                    GetSingleLocation(marker);
+
                 }
 
 
                 return true;
+            }
+        });
+    }
+
+    void OpenInfoPanel(Marker marker){
+        addressField.setText(GetAddressStreet(marker.getPosition()));
+        SetInfoPanelVisible(true);
+        SetAddLocationBtnVisible(false);
+        currentlySelectedMarker = marker;
+        SetRating();
+    }
+
+    void SetRating(){
+        DecimalFormat format = new DecimalFormat("0.0");
+        if (selectedLocationData != null){
+            List<RatingItem> list = new ArrayList<>(selectedLocationData.getRatingItemList());
+            if (list.size() == 0){
+                txt_rate.setText("No reviews yet");
+                txt_reviewCount.setText("Reviews: 0");
+                generalRatingBar.setRating(0);
+            }else{
+                double sum = 0.0;
+                for(RatingItem item : list){
+                    sum += item.getRating();
+                }
+                txt_rate.setText(format.format(sum/list.size()));
+                txt_reviewCount.setText("Reviews: "+list.size());
+                generalRatingBar.setRating((float) sum/list.size());
+            }
+        }
+    }
+
+    private void GetSingleLocation(Marker marker){
+
+        DatabaseReference db_location  = db_ref.child(GetAddressStreet(marker.getPosition()));
+        db_location.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                selectedLocationData = snapshot.getValue(LocationData.class);
+                if (selectedLocationData.getRatingItemList() == null){
+                    selectedLocationData.ratingItemList = new ArrayList<>();
+                }
+                OpenInfoPanel(marker);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                selectedLocationData = null;
             }
         });
     }
@@ -430,7 +529,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (requestCode == REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
                 map.setMyLocationEnabled(true);
@@ -503,6 +604,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             SetInfoPanelVisible(false);
             SetAddLocationBtnVisible(true);
             currentlySelectedMarker = null;
+            selectedLocationData = null;
+            map.getUiSettings().setAllGesturesEnabled(true);
         }
     };
 
@@ -512,6 +615,39 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             //Message.ShowToast(getApplicationContext(), "delete");
             //show confirmation dialog
             ShowDeleteLocationDialog();
+        }
+    };
+
+    View.OnClickListener rateBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(selectedLocationData != null){
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+
+                selectedRatingValue = 2.5;
+                ratingBar.setRating((float) selectedRatingValue);
+
+                UpdateLocationInfo(selectedLocationData);
+            }
+        }
+    };
+
+    View.OnClickListener confirmRateBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            selectedLocationData.ratingItemList.add(new RatingItem(selectedRatingValue));
+            UpdateLocationInfo(selectedLocationData);
+            GetSingleLocation(currentlySelectedMarker);
+            dialog.cancel();
+        }
+    };
+
+    RatingBar.OnRatingBarChangeListener changeRatingBarListener = new RatingBar.OnRatingBarChangeListener() {
+        @Override
+        public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+            selectedRatingValue = (double) v;
         }
     };
 
@@ -622,6 +758,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         LocationData data = new LocationData(title, latitude, longitude);
         db_ref.child(key.replace(".", "")).setValue(data);
+    }
+
+    void UpdateLocationInfo(LocationData locationData){
+        db_ref.child(GetAddressStreet(
+                        locationData.getLatitude(),
+                        locationData.getLongitude()
+                ).replace(".", "")).setValue(locationData);
     }
 
     void RemoveLocation(){
