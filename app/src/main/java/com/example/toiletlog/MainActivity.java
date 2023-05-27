@@ -28,7 +28,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    LinearLayout addBtn, listBtn, settingsBtn, mapBtn;
+    LinearLayout addBtn, listBtn, settingsBtn, mapBtn, analyzeBtn;
     TextView title;
 
     @SuppressLint("MissingInflatedId")
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         listBtn = findViewById(R.id.btn_list);
         settingsBtn = findViewById(R.id.btn_settings);
         mapBtn = findViewById(R.id.btn_map);
+        analyzeBtn = findViewById(R.id.btn_analysis);
 
         title = findViewById(R.id.menuTitle);
 
@@ -112,6 +113,18 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
                 //goes to settings
                 Intent intent = new Intent(getBaseContext(), MapActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        analyzeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // show settings activity
+                //Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
+                //goes to settings
+                Intent intent = new Intent(getBaseContext(), ChartActivity.class);
                 startActivity(intent);
 
             }
