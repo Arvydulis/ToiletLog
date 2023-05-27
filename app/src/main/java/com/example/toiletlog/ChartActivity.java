@@ -67,21 +67,27 @@ public class ChartActivity extends AppCompatActivity {
         monthEditText.setOnClickListener(monthPickerOnClick);
         GetCurrDate();
 
-        // char options an axis references
+        // chart options
         chart.setDragEnabled(false);
+        chart.setDescription(null);
+
         typePieChart.setBackgroundColor(Color.GRAY);
         typePieChart.setHoleRadius(40);
         typePieChart.setTransparentCircleRadius(45);
         typePieChart.getLegend().setEnabled(false);
+        typePieChart.setDescription(null);
+
         sizePieChart.setBackgroundColor(Color.GRAY);
         sizePieChart.setHoleRadius(40);
         sizePieChart.setTransparentCircleRadius(45);
         sizePieChart.getLegend().setEnabled(false);
+        sizePieChart.setDescription(null);
+
+        // axis options
         YAxis leftAxis = chart.getAxisLeft();
         YAxis rightAxis = chart.getAxisRight();
         XAxis xAxis = chart.getXAxis();
 
-        // axis options
         rightAxis.setEnabled(false);
         xAxis.setAxisMinimum(0);
         xAxis.setAxisMaximum(getDayCountFromMonth());
@@ -89,7 +95,6 @@ public class ChartActivity extends AppCompatActivity {
         leftAxis.setAxisMinimum(0);
         leftAxis.setGranularityEnabled(true);
         leftAxis.setGranularity(1);
-        chart.setDescription(null);
 
         // referencing database
         db = AppActivity.getDatabase();
