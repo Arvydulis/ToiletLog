@@ -308,7 +308,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (navbar.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             navbar.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
