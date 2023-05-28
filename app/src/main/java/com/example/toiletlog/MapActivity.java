@@ -721,7 +721,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onBackPressed() {
         if (navbar.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             navbar.drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+        } else if(currentlySelectedMarker != null){
+            CloseInfoPanel();
+        }else{
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -928,13 +930,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     View.OnClickListener closeInfoPanelBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            SetInfoPanelVisible(false);
-            SetAddLocationBtnVisible(true);
-            currentlySelectedMarker = null;
-            selectedLocationData = null;
-            map.getUiSettings().setAllGesturesEnabled(true);
+            CloseInfoPanel();
         }
     };
+
+    void CloseInfoPanel(){
+        SetInfoPanelVisible(false);
+        SetAddLocationBtnVisible(true);
+        currentlySelectedMarker = null;
+        selectedLocationData = null;
+        map.getUiSettings().setAllGesturesEnabled(true);
+    }
 
     View.OnClickListener removeLocationBtnListener = new View.OnClickListener() {
         @Override
