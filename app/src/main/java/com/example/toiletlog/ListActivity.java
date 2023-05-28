@@ -41,6 +41,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -333,7 +334,8 @@ public class ListActivity extends AppCompatActivity {
         btn_addNewEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), NewItemActivity.class);
+                Intent intent = new Intent(ListActivity.this, NewItemActivity.class);
+                intent.putExtra("startingActivity", "ListActivity");
                 startActivity(intent);
             }
         });
