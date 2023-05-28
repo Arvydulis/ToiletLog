@@ -1,13 +1,19 @@
 package com.example.toiletlog;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -55,9 +61,10 @@ public class ChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
+        navbar.InstantiateAppBarAndNav(this, R.string.title_analysis);
+        drawerLayout = navbar.drawerLayout;
 
-        //navbar.InstantiateAppBarAndNav(this, R.string.title_list);
-        //drawerLayout = navbar.drawerLayout;
+
 
         // referencing charts
         chart = (BarChart) findViewById(R.id.chart);
@@ -70,11 +77,16 @@ public class ChartActivity extends AppCompatActivity {
         GetCurrDate();
 
         // chart options
-        chart.setBackgroundColor(Color.WHITE);
+
+        chart.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.rounded_rect_white));
+        //chart.setBackgroundColor(Color.WHITE);
         chart.setDragEnabled(false);
         chart.setDescription(null);
 
-        typePieChart.setBackgroundColor(Color.GRAY);
+
+
+        //typePieChart.setBackgroundColor(Color.GRAY);
+        typePieChart.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.rounded_rect_white));
         typePieChart.setHoleRadius(30);
         typePieChart.setTransparentCircleRadius(35);
         typePieChart.getLegend().setWordWrapEnabled(true);
@@ -82,7 +94,8 @@ public class ChartActivity extends AppCompatActivity {
         //typePieChart.getLegend().setEnabled(false);
         typePieChart.setDescription(null);
 
-        sizePieChart.setBackgroundColor(Color.GRAY);
+        //sizePieChart.setBackgroundColor(Color.GRAY);
+        sizePieChart.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.rounded_rect_white));
         sizePieChart.setHoleRadius(30);
         sizePieChart.setTransparentCircleRadius(35);
         sizePieChart.getLegend().setEnabled(false);
@@ -307,16 +320,40 @@ public class ChartActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-//            drawerLayout.closeDrawer(GravityCompat.START);
-//        }else {
-//            Intent intent = new Intent(this, ListActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+//        finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ChartActivity.this);
+                Message.ShowNotification(ChartActivity.this, getApplicationContext(),
+                        "Test notification", "Hello " + prefs.getString("name", "") + "!!!");
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }
