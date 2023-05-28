@@ -342,7 +342,7 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 logEntryList = db.logEntryDAO().getAllLogEntries();
-                logEntryList = SortTime(logEntryList);
+                logEntryList = SortDateAndTIme(logEntryList);
 
                 LogListAdapter listAdapter = new LogListAdapter(getApplicationContext(), logEntryList);
                 personsListTextView.setAdapter(listAdapter);
