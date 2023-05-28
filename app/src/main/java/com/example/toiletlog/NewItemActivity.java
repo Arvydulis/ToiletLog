@@ -139,6 +139,8 @@ public class NewItemActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
 
+        adapter.add("Home");
+        adapter.add("None");
         db_ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
