@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -364,9 +365,18 @@ public class NewItemActivity extends AppCompatActivity {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
-            Intent intent = new Intent(this, ListActivity.class);
+            String startingActivity = getIntent().getStringExtra("startingActivity");
+            Intent intent;
+            if (startingActivity == null || startingActivity.equals("MainActivity")) {
+                intent = new Intent(this, MainActivity.class);
+            }
+            else
+            {
+                intent = new Intent(this, ListActivity.class);
+            }
             startActivity(intent);
             finish();
+
         }
     }
 

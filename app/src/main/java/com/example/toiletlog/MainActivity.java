@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "add entry", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getBaseContext(), NewItemActivity.class);
+                intent.putExtra("startingActivity", "MainActivity");
                 startActivity(intent);
             }
         });
