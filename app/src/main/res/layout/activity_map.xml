@@ -155,8 +155,9 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="500dp"
+                        android:orientation="vertical"
+                        android:layout_gravity="top">
 
                         <TextView
                             android:id="@+id/address_field"
@@ -172,125 +173,131 @@
                             android:textSize="25sp"
                             android:textStyle="bold" />
 
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                        <com.google.android.material.divider.MaterialDivider
-                            android:layout_width="350dp"
-                            android:layout_height="3dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginVertical="5dp"
-                            app:dividerColor="@color/colorPrimaryVariant" />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:layout_marginVertical="10dp"
-                            android:layout_marginStart="10dp"
-                            android:text="Images"
-                            android:textColor="@color/white"
-                            android:textSize="25sp"
-                            android:textStyle="bold" />
-
-                        <!-- image scroll view -->
-
-                        <Button
-                            android:id="@+id/cam_test"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="5dp"
-                            android:backgroundTint="@color/colorPrimaryLightVariant"
-                            android:elevation="10dp"
-                            android:text="cam" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <com.google.android.material.divider.MaterialDivider
+                                    android:layout_width="350dp"
+                                    android:layout_height="3dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginVertical="5dp"
+                                    app:dividerColor="@color/colorPrimaryVariant" />
 
 
-                        <com.google.android.material.divider.MaterialDivider
-                            android:layout_width="350dp"
-                            android:layout_height="3dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginVertical="5dp"
-                            app:dividerColor="@color/colorPrimaryVariant" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:layout_marginVertical="10dp"
+                                    android:layout_marginStart="10dp"
+                                    android:text="Images"
+                                    android:textColor="@color/white"
+                                    android:textSize="25sp"
+                                    android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:layout_marginVertical="10dp"
-                            android:layout_marginStart="10dp"
-                            android:text="Rating"
-                            android:textColor="@color/white"
-                            android:textSize="25sp"
-                            android:textStyle="bold" />
+                                <!-- image scroll view -->
 
-                        <!-- rating view -->
-                        <TextView
-                            android:id="@+id/rating_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="3,5"
-                            android:textColor="@color/white"
-                            android:textSize="25sp" />
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scrollbars="horizontal"
+                                    android:id="@+id/image_list">
 
-                        <RatingBar
-                            android:id="@+id/general_rating_bar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:contentDescription="rating"
-                            android:isIndicator="true"
-                            android:rating="3" />
-
-                        <TextView
-                            android:id="@+id/review_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:text="Reviews: 0"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
-
-                        <Button
-                            android:id="@+id/btn_rate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="5dp"
-                            android:backgroundTint="@color/colorPrimaryLightVariant"
-                            android:elevation="10dp"
-                            android:text="Rate" />
+                                </androidx.recyclerview.widget.RecyclerView>
+                                <Button
+                                    android:id="@+id/cam_test"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_margin="5dp"
+                                    android:backgroundTint="@color/colorPrimaryLightVariant"
+                                    android:elevation="10dp"
+                                    android:text="Upload photo" />
 
 
-                        <com.google.android.material.divider.MaterialDivider
-                            android:layout_width="350dp"
-                            android:layout_height="3dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginVertical="5dp"
-                            app:dividerColor="@color/colorPrimaryVariant" />
+                                <com.google.android.material.divider.MaterialDivider
+                                    android:layout_width="350dp"
+                                    android:layout_height="3dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginVertical="5dp"
+                                    app:dividerColor="@color/colorPrimaryVariant" />
 
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:layout_marginVertical="10dp"
+                                    android:layout_marginStart="10dp"
+                                    android:text="Rating"
+                                    android:textColor="@color/white"
+                                    android:textSize="25sp"
+                                    android:textStyle="bold" />
+
+                                <!-- rating view -->
+                                <TextView
+                                    android:id="@+id/rating_label"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="3,5"
+                                    android:textColor="@color/white"
+                                    android:textSize="25sp" />
+
+                                <RatingBar
+                                    android:id="@+id/general_rating_bar"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:contentDescription="rating"
+                                    android:isIndicator="true"
+                                    android:rating="3" />
+
+                                <TextView
+                                    android:id="@+id/review_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:text="Reviews: 0"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp" />
+
+                                <Button
+                                    android:id="@+id/btn_rate"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_margin="5dp"
+                                    android:backgroundTint="@color/colorPrimaryLightVariant"
+                                    android:elevation="10dp"
+                                    android:text="Rate" />
+
+
+                                <com.google.android.material.divider.MaterialDivider
+                                    android:layout_width="350dp"
+                                    android:layout_height="3dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginVertical="5dp"
+                                    app:dividerColor="@color/colorPrimaryVariant" />
+                            </LinearLayout>
+                        </ScrollView>
 
                     </LinearLayout>
 
-                    <!-- buttons layout -->
-                    <LinearLayout
+                    <Button
+                        android:id="@+id/btn_remove_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:orientation="horizontal">
-
-
-                        <Button
-                            android:id="@+id/btn_remove_location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:backgroundTint="@color/colorPrimaryLightVariant"
-                            android:elevation="10dp"
-                            android:text="Remove" />
-
-                    </LinearLayout>
+                        android:layout_margin="5dp"
+                        android:backgroundTint="@color/colorPrimaryLightVariant"
+                        android:elevation="10dp"
+                        android:text="Remove"
+                        android:layout_gravity="center_horizontal|bottom"/>
 
 
                 </FrameLayout>

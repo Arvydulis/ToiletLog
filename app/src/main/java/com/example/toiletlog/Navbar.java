@@ -107,6 +107,14 @@ public class Navbar extends AppCompatActivity {
                         }
                         break;
                     }
+                    case R.id.nav_analysis: {
+                        if (!activity.getClass().getName().equals(ChartActivity.class.getName())) {
+                            //Toast.makeText(activity.getApplicationContext(), "settings", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(activity.getBaseContext(), ChartActivity.class);
+                            activity.startActivity(intent);
+                        }
+                        break;
+                    }
 
                 }
                 return false;
