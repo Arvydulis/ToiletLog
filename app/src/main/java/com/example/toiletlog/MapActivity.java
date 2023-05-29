@@ -399,7 +399,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
 
-
     }
 
     void ShowPhotoDialog(){
@@ -570,7 +569,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                if (currentlySelectedMarker != null) {
+                    imageAdapter = new ImageAdapter(MapActivity.this, selectedLocationData.photoItemList, selectedLocationData);
+                    recyclerView.setAdapter(imageAdapter);
+                }
             }
 
             @Override
@@ -635,8 +637,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }else{
             items = new ArrayList<>(selectedLocationData.getPhotoItemList());
         }
-        imageAdapter = new ImageAdapter(MapActivity.this, items);
+        imageAdapter = new ImageAdapter(MapActivity.this, items, selectedLocationData);
         recyclerView.setAdapter(imageAdapter);
+        recyclerView.setClickable(true);
+
     }
 
     void SetRating(){
@@ -1158,7 +1162,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             }
                             selectedLocationData.photoItemList.add(item);
                             UpdateLocationInfo(selectedLocationData);
-                            imageAdapter = new ImageAdapter(MapActivity.this, selectedLocationData.photoItemList);
+                            imageAdapter = new ImageAdapter(MapActivity.this, selectedLocationData.photoItemList, selectedLocationData);
                             recyclerView.setAdapter(imageAdapter);
                         }
                     });
