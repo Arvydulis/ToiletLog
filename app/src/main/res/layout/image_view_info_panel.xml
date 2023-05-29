@@ -6,7 +6,8 @@
     android:layout_margin="8dp"
     android:layout_gravity="center"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp">
+    app:cardElevation="8dp"
+    android:background="@drawable/rounded_rect_white">
     <ImageView
         android:layout_width="100dp"
         android:layout_height="140dp"
